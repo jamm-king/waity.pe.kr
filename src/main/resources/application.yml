@@ -1,0 +1,22 @@
+## mysql
+spring:
+  datasource:
+    hikari:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: ${SPRING_DATASOURCE_URL}
+      username: ${SPRING_DATASOURCE_USERNAME}
+      password: ${SPRING_DATASOURCE_PASSWORD}
+
+
+
+## mybatis
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+## youtube
+
+youtube:
+  key: AIzaSyBzXpb-djwWT18JGwQCWLS3Fg4B_ZVLFfQ
+  endpoint: https://www.googleapis.com/youtube/v3

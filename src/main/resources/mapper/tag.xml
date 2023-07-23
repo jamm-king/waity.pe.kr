@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waity.api.mapper.tagMapper">
+    <select id="selectTagAll" resultType="com.waity.api.dto.tagDTO">
+		select
+				*
+		from
+				yt_tag
+    </select>
+    <select id="selectTagByNames" resultType="com.waity.api.dto.tagDTO">
+		select
+				*
+		from
+				yt_tag
+		WHERE
+				tag_name IN
+				<foreach item="name" index="index" collection="array" open="(" close=")" separator=",">
+					#{name}
+				</foreach>
+    </select>
+	<insert id="insertTag" parameterType="com.waity.api.dto.tagDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+				yt_tag (tag_name)
+		VALUES(
+				#{tagName}
+		)
+		ON DUPLICATE KEY UPDATE
+				tag_name = #{tagName}
+	</insert>
+	<update id="updateTag" parameterType="com.waity.api.dto.tagDTO">
+		update
+				yt_tag
+		set
+				tag_name = #{tagName}
+		where
+				id = #{id}
+	</update>
+	<delete id="deleteTag" parameterType="com.waity.api.dto.tagDTO">
+		delete from
+				yt_tag
+		where
+				id = #{id}
+	</delete>
+</mapper>

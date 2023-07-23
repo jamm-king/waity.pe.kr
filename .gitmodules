@@ -1,0 +1,3 @@
+[submodule "src/main/waity.pe.kr-frontend"]
+	path = src/main/waity.pe.kr-frontend
+	url = https://github.com/jamm-king/waity.pe.kr-frontend.git

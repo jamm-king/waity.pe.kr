@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waity.api.mapper.videoMapper">
+	<select id="selectVideoByVideoId" resultType="com.waity.api.dto.videoDTO">
+		SELECT
+				*
+		FROM
+				yt_video
+		WHERE
+				video_id = #{videoId}
+    </select>
+    <select id="selectVideoByChannelIds" resultType="com.waity.api.dto.videoDTO">
+		SELECT
+				C.id, C.video_id, C.title, C.thumbnail
+		FROM
+				yt_channel A
+		INNER JOIN
+				yt_channel_video B
+		ON
+				A.id = B.channel_id
+		INNER JOIN
+				yt_video C
+		ON
+				C.id = B.video_id
+		WHERE
+				A.id IN
+				<foreach item="id" index="index" collection="array" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+    </select>
+    <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO">
+		INSERT INTO yt_video (id, video_id, title, thumbnail)
+		VALUES(
+				#{id},
+				#{videoId},
+				#{title},
+				#{thumbnail}
+			  )
+		ON DUPLICATE KEY UPDATE
+				video_id = #{videoId},
+				title = #{title},
+				thumbnail = #{thumbnail}
+    </insert>
+    <select id="getLastId" resultType="int">
+		select
+				max(id)
+		from
+				yt_video
+    </select>
+</mapper>

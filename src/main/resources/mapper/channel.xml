@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waity.api.mapper.channelMapper">
+    <select id="selectChannelAll" resultType="com.waity.api.dto.channelDTO">
+		select
+				*
+		from
+				yt_channel
+    </select>
+    <select id="selectChannelByChannelId" resultType="com.waity.api.dto.channelDTO">
+		SELECT
+				*
+		FROM
+				yt_channel
+		WHERE
+				channel_id = #{channelId}
+    </select>
+    <select id="selectChannelByIds" resultType="com.waity.api.dto.channelDTO">
+		select
+				*
+		from
+				yt_channel
+		WHERE
+				id IN
+				<foreach item="id" index="index" collection="array" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+    </select>
+    <select id="selectChannelByTags" resultType="com.waity.api.dto.channelDTO">
+		SELECT
+				A.id, A.channel_id, A.keyword, A.image, A.title, A.subscription_count, A.view_count, A.description
+		FROM
+				yt_channel A
+		INNER JOIN
+				yt_channel_tag B
+		ON
+				A.id = B.channel_id
+		INNER JOIN
+				yt_tag C
+		ON
+				C.id = B.tag_id
+		WHERE
+				C.tag_name IN
+				<foreach item="tag" index="index" collection="array" open="(" close=")" separator=",">
+					#{tag}
+				</foreach>
+		ORDER BY A.subscription_count DESC
+    </select>
+	<select id="selectChannelIdAll" resultType="String">
+		select
+		channel_id
+		from
+		yt_channel
+	</select>
+	<select id="getLastId" resultType="int">
+		select
+		max(id)
+		from
+		yt_channel
+	</select>
+    <insert id="insertChannel" parameterType="com.waity.api.dto.channelDTO">
+		INSERT INTO
+				yt_channel (channel_id, keyword, image, title, subscription_count, view_count, description)
+		VALUES(
+				#{channelId},
+				#{keyword},
+				#{image},
+				#{title},
+			 	#{subscriptionCount},
+			 	#{viewCount},
+			 	#{description},
+			 )
+	 	ON DUPLICATE KEY UPDATE
+				keyword = #{keyword},
+				image = #{image},
+				title = #{title},
+				subscription_count = #{subscriptionCount},
+				view_count = #{viewCount},
+				description = #{description}
+    </insert>
+	<update id="updateChannel" parameterType="com.waity.api.dto.channelDTO">
+		update
+				yt_channel
+		set
+				channel_id = #{channelId},
+				keyword = #{keyword},
+				image = #{image},
+				title = #{title},
+				subscription_count = #{subscriptionCount},
+				view_count = #{viewCount},
+				description = #{description},
+				video_count = #{videoCount}
+		where
+				id = #{id}
+	</update>
+	<delete id="deleteChannel" parameterType="com.waity.api.dto.channelDTO">
+		delete from
+				yt_channel
+		where
+				id = #{id}
+	</delete>
+
+</mapper>
