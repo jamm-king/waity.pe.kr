@@ -7,6 +7,14 @@
 		from
 				yt_channel
     </select>
+	<select id="selectChannelById" resultType="com.waity.api.dto.channelDTO">
+		SELECT
+				*
+		FROM
+				yt_channel
+		WHERE
+				id = #{id}
+	</select>
     <select id="selectChannelByChannelId" resultType="com.waity.api.dto.channelDTO">
 		SELECT
 				*
