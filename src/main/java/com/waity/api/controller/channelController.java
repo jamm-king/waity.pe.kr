@@ -13,7 +13,7 @@ import com.waity.api.service.channelService;
 		origins="*",
 		methods={RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
 		allowedHeaders="*",
-		allowCredentials="true")
+		allowCredentials="false")
 @RestController
 public class channelController {
 	@Autowired
