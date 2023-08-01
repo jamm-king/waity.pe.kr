@@ -5,10 +5,15 @@ import java.util.List;
 
 import com.waity.api.dto.channelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
 
-@CrossOrigin(methods={RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(
+		origins="*",
+		methods={RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+		allowedHeaders="*",
+		allowCredentials="true")
 @RestController
 public class channelController {
 	@Autowired
