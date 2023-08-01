@@ -10,7 +10,7 @@ import com.waity.api.service.channelService;
 
 @CrossOrigin(
 		origins="*",
-		allowedHeaders={"GET", "POST", "PUT", "DELETE"}
+		methods={RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}
 	)
 @RestController
 public class channelController {
