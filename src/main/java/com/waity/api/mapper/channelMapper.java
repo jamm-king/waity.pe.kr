@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface channelMapper {
 	List<channelDTO> selectChannelAll() throws Exception;
+	channelDTO selectChannelById(int id) throws Exception;
 	List<channelDTO> selectChannelByIds(String[] names) throws Exception;
 	List<channelDTO> selectChannelByTags(String[] tags) throws Exception;
 	void updateChannel(channelDTO channel) throws Exception;

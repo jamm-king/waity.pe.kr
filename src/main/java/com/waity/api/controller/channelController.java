@@ -19,6 +19,11 @@ public class channelController {
 		return channelService.selectChannelAll();
 	}
 
+	@GetMapping(path = "/api/channel/{id}")
+	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
+		return channelService.selectChannelById(id);
+	}
+
 	@GetMapping(value = "/api/channel", params = "ids")
 	public List<channelDTO> selectChannelByIds(@RequestParam("ids") String[] ids) throws Exception {
 		return channelService.selectChannelByIds(ids);

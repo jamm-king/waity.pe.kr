@@ -51,6 +51,11 @@ public class channelServiceImpl implements channelService {
 	}
 
 	@Override
+	public channelDTO selectChannelById(int id) throws Exception {
+		return channelMapper.selectChannelById(id);
+	}
+
+	@Override
 	public List<channelDTO> selectChannelByIds(String[] ids) throws Exception {
 		return channelMapper.selectChannelByIds(ids);
 	}

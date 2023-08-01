@@ -8,6 +8,7 @@ import java.util.List;
 public interface channelService {
 	//List<channelDTO> ChannelList(List<channelDTO> channelList) throws Exception;
 	List<channelDTO> selectChannelAll() throws Exception;
+	channelDTO selectChannelById(int id) throws Exception;
 	List<channelDTO> selectChannelByIds(String[] ids) throws Exception;
 	List<channelDTO> selectChannelByTags(String[] tags) throws Exception;
 
