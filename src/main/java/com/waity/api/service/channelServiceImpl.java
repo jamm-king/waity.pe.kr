@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.waity.api.dto.videoDTO;
 import com.waity.api.mapper.channelMapper;
 import com.waity.api.mapper.videoMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class channelServiceImpl implements channelService {
 	@Autowired
 	private channelMapper channelMapper;
@@ -76,6 +78,7 @@ public class channelServiceImpl implements channelService {
 
 	@Override
 	public void deleteChannel(channelDTO channel) throws Exception {
+		videoMapper.deleteVideoByChannel(channel);
 		channelMapper.deleteChannel(channel);
 	}
 
