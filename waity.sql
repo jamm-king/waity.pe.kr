@@ -370,8 +370,8 @@ CREATE TABLE `yt_video_tag` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `yt_video_tag_video_id_tag_id_uniq` (`video_id`,`tag_id`),
   KEY `yt_video_tag_tag_id_fk_yt_tag_id` (`tag_id`),
-  CONSTRAINT `yt_video_tag_tag_id_fk_yt_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `yt_tag` (`id`),
-  CONSTRAINT `yt_video_tag_video_id_fk_yt_video_id` FOREIGN KEY (`video_id`) REFERENCES `yt_video` (`id`)
+  CONSTRAINT `yt_video_tag_tag_id_fk_yt_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `yt_tag` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `yt_video_tag_video_id_fk_yt_video_id` FOREIGN KEY (`video_id`) REFERENCES `yt_video` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5684 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
