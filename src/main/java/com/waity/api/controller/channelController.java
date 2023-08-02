@@ -49,6 +49,7 @@ public class channelController {
 		responseHeader.add("Access-Control-Allow-Methods", "PUT, OPTIONS");
 		responseHeader.add("Access-Control-Allow-Headers", "*");
 		responseHeader.add("Access-Control-Max-Age", "300");
+		System.out.println("PUT request arrived");
 		return new ResponseEntity<String>("hi", responseHeader, HttpStatus.OK);
 	}
 
