@@ -2,6 +2,7 @@ package com.waity.api.service;
 
 import java.util.List;
 
+import com.waity.api.dto.channelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,8 @@ public class videoServiceImpl implements videoService {
 		videoMapper.insertVideo(video);
 	}
 
-
+	@Override
+	public void deleteVideoByChannel(channelDTO channel) throws Exception {
+		videoMapper.deleteVideoByChannel(channel);
+	}
 }

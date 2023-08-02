@@ -2,6 +2,7 @@ package com.waity.api.mapper;
 
 import java.util.List;
 
+import com.waity.api.dto.channelDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.waity.api.dto.videoDTO;
@@ -10,4 +11,5 @@ import com.waity.api.dto.videoDTO;
 public interface videoMapper {
 	List<videoDTO> selectVideoByChannelIds(int[] ids) throws Exception;
 	void insertVideo(videoDTO video) throws Exception;
+	void deleteVideoByChannel(channelDTO channel) throws Exception;
 }

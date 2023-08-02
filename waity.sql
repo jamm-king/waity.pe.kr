@@ -145,10 +145,10 @@ CREATE TABLE `yt_channel_tag` (
   `channel_id` int NOT NULL,
   `tag_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `yt_channel_tag_channel_id_tag_id_87ada002_uniq` (`channel_id`,`tag_id`),
-  KEY `yt_channel_tag_tag_id_6d6d6033_fk_yt_tag_id` (`tag_id`),
-  CONSTRAINT `yt_channel_tag_channel_id_cd1f3676_fk_yt_channel_id` FOREIGN KEY (`channel_id`) REFERENCES `yt_channel` (`id`),
-  CONSTRAINT `yt_channel_tag_tag_id_6d6d6033_fk_yt_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `yt_tag` (`id`)
+  UNIQUE KEY `yt_channel_tag_channel_id_tag_id_uniq` (`channel_id`,`tag_id`),
+  KEY `yt_channel_tag_tag_id_fk_yt_tag_id` (`tag_id`),
+  CONSTRAINT `yt_channel_tag_channel_id_fk_yt_channel_id` FOREIGN KEY (`channel_id`) REFERENCES `yt_channel` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `yt_channel_tag_tag_id_fk_yt_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `yt_tag` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=67588 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -176,8 +176,8 @@ CREATE TABLE `yt_channel_video` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `yt_channel_video_channel_id_video_id_uniq` (`channel_id`,`video_id`),
   KEY `yt_channel_video_video_id_fk_yt_video_id` (`video_id`),
-  CONSTRAINT `yt_channel_video_channel_id_fk_yt_channel_id` FOREIGN KEY (`channel_id`) REFERENCES `yt_channel` (`id`),
-  CONSTRAINT `yt_channel_video_video_id_fk_yt_video_id` FOREIGN KEY (`video_id`) REFERENCES `yt_video` (`id`)
+  CONSTRAINT `yt_channel_video_channel_id_fk_yt_channel_id` FOREIGN KEY (`channel_id`) REFERENCES `yt_channel` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `yt_channel_video_video_id_fk_yt_video_id` FOREIGN KEY (`video_id`) REFERENCES `yt_video` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9237 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
