@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
 
 @RestController
-@CrossOrigin
 public class channelController {
 	@Autowired
 	private channelService channelService;
-	
+
+	@CrossOrigin
 	@GetMapping("/api/channel")
 	public List<channelDTO> selectChannelAll() throws Exception {
 		return channelService.selectChannelAll();
 	}
 
+	@CrossOrigin
 	@GetMapping(path = "/api/channel/{id}")
 	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
 		return channelService.selectChannelById(id);
