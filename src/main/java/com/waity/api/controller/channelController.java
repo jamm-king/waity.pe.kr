@@ -16,17 +16,13 @@ public class channelController {
 	@Autowired
 	private channelService channelService;
 
-	@CrossOrigin
 	@GetMapping("/api/channel")
 	public List<channelDTO> selectChannelAll() throws Exception {
-		System.out.println("GET selectChannelAll");
 		return channelService.selectChannelAll();
 	}
 
-	@CrossOrigin
 	@GetMapping(path = "/api/channel/{id}")
 	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
-		System.out.println("GET selectChannelById");
 		return channelService.selectChannelById(id);
 	}
 
@@ -39,23 +35,11 @@ public class channelController {
 		return channelService.selectChannelByTags(tags);
 	}
 
-	@CrossOrigin
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
-		System.out.println("PUT updateChannel");
 		channelService.updateChannel(channel);
 	}
 
-//	@PutMapping("/api/channel")
-//	public ResponseEntity<String> updateChannel(@RequestBody channelDTO channel) throws Exception {
-//		HttpHeaders responseHeader = new HttpHeaders();
-//		responseHeader.add("Access-Control-Allow-Origin", "*");
-//		responseHeader.add("Access-Control-Allow-Methods", "PUT, OPTIONS");
-//		responseHeader.add("Access-Control-Allow-Headers", "*");
-//		responseHeader.add("Access-Control-Max-Age", "300");
-//		System.out.println("PUT updateChannel");
-//		return new ResponseEntity<String>("hi", responseHeader, HttpStatus.OK);
-//	}
 
 	@PostMapping("/api/channel")
 	public void insertChannel(@RequestBody channelDTO channel) throws Exception {
