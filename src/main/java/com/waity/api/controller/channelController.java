@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.waity.api.dto.channelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
 
@@ -33,10 +36,20 @@ public class channelController {
 		return channelService.selectChannelByTags(tags);
 	}
 
-	@CrossOrigin
+//	@CrossOrigin
+//	@PutMapping("/api/channel")
+//	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
+//		channelService.updateChannel(channel);
+//	}
+
 	@PutMapping("/api/channel")
-	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
-		channelService.updateChannel(channel);
+	public ResponseEntity<String> updateChannel(@RequestBody channelDTO channel) throws Exception {
+		HttpHeaders responseHeader = new HttpHeaders();
+		responseHeader.add("Access-Control-Allow-Origin", "*");
+		responseHeader.add("Access-Control-Allow-Methods", "PUT, OPTIONS");
+		responseHeader.add("Access-Control-Allow-Headers", "*");
+		responseHeader.add("Access-Control-Max-Age", "300");
+		return new ResponseEntity<String>("hi", responseHeader, HttpStatus.OK);
 	}
 
 	@PostMapping("/api/channel")
