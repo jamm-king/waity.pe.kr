@@ -10,8 +10,8 @@ import com.waity.api.service.channelService;
 
 @RestController
 @CrossOrigin(
-		origins="http://localhost:3000",
-		methods={RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+		origins="*",
+		methods={RequestMethod.OPTIONS,RequestMethod.GET,RequestMethod.DELETE,RequestMethod.POST}
 )
 public class channelController {
 	@Autowired
