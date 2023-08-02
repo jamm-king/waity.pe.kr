@@ -48,13 +48,15 @@
 				yt_video
     </select>
 	<delete id="deleteVideoByChannel" parameterType="com.waity.api.dto.channelDTO">
-		delete from
-				yt_video a
+		delete
+				A, B
+		from
+				yt_video A
 		inner join
-				yt_channel_video b
+				yt_channel_video B
 		on
-				a.id = b.video_id
+				A.id = B.video_id
 		where
-				b.channel_id = #{id}
+				B.channel_id = #{id}
 	</delete>
 </mapper>
