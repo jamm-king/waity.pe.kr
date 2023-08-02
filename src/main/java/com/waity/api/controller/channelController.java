@@ -44,7 +44,7 @@ public class channelController {
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
 		System.out.println("PUT updateChannel");
 		channelService.updateChannel(channel);
-	}g
+	}
 
 //	@PutMapping("/api/channel")
 //	public ResponseEntity<String> updateChannel(@RequestBody channelDTO channel) throws Exception {
