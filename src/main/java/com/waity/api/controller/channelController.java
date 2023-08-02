@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
 
 @RestController
-@CrossOrigin(
-		origins="*",
-		methods={RequestMethod.OPTIONS,RequestMethod.GET,RequestMethod.DELETE,RequestMethod.POST}
-)
+@CrossOrigin(origins="*",allowedHeaders = "*")
 public class channelController {
 	@Autowired
 	private channelService channelService;
