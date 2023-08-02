@@ -19,12 +19,14 @@ public class channelController {
 	@CrossOrigin
 	@GetMapping("/api/channel")
 	public List<channelDTO> selectChannelAll() throws Exception {
+		System.out.println("GET selectChannelAll");
 		return channelService.selectChannelAll();
 	}
 
 	@CrossOrigin
 	@GetMapping(path = "/api/channel/{id}")
 	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
+		System.out.println("GET selectChannelById");
 		return channelService.selectChannelById(id);
 	}
 
@@ -50,7 +52,7 @@ public class channelController {
 		responseHeader.add("Access-Control-Allow-Methods", "PUT, OPTIONS");
 		responseHeader.add("Access-Control-Allow-Headers", "*");
 		responseHeader.add("Access-Control-Max-Age", "300");
-		System.out.println("PUT request arrived");
+		System.out.println("PUT updateChannel");
 		return new ResponseEntity<String>("hi", responseHeader, HttpStatus.OK);
 	}
 
