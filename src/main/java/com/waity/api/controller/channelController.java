@@ -39,22 +39,22 @@ public class channelController {
 		return channelService.selectChannelByTags(tags);
 	}
 
-//	@CrossOrigin
-//	@PutMapping("/api/channel")
-//	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
-//		channelService.updateChannel(channel);
-//	}
-
+	@CrossOrigin
 	@PutMapping("/api/channel")
-	public ResponseEntity<String> updateChannel(@RequestBody channelDTO channel) throws Exception {
-		HttpHeaders responseHeader = new HttpHeaders();
-		responseHeader.add("Access-Control-Allow-Origin", "*");
-		responseHeader.add("Access-Control-Allow-Methods", "PUT, OPTIONS");
-		responseHeader.add("Access-Control-Allow-Headers", "*");
-		responseHeader.add("Access-Control-Max-Age", "300");
-		System.out.println("PUT updateChannel");
-		return new ResponseEntity<String>("hi", responseHeader, HttpStatus.OK);
+	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
+		channelService.updateChannel(channel);
 	}
+
+//	@PutMapping("/api/channel")
+//	public ResponseEntity<String> updateChannel(@RequestBody channelDTO channel) throws Exception {
+//		HttpHeaders responseHeader = new HttpHeaders();
+//		responseHeader.add("Access-Control-Allow-Origin", "*");
+//		responseHeader.add("Access-Control-Allow-Methods", "PUT, OPTIONS");
+//		responseHeader.add("Access-Control-Allow-Headers", "*");
+//		responseHeader.add("Access-Control-Max-Age", "300");
+//		System.out.println("PUT updateChannel");
+//		return new ResponseEntity<String>("hi", responseHeader, HttpStatus.OK);
+//	}
 
 	@PostMapping("/api/channel")
 	public void insertChannel(@RequestBody channelDTO channel) throws Exception {
