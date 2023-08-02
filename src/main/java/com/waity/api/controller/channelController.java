@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
 
 @RestController
-@CrossOrigin(origins="*",allowedHeaders = "*",allowCredentials = "true")
+@CrossOrigin
 public class channelController {
 	@Autowired
 	private channelService channelService;
@@ -33,6 +33,7 @@ public class channelController {
 		return channelService.selectChannelByTags(tags);
 	}
 
+	@CrossOrigin
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
 		channelService.updateChannel(channel);
