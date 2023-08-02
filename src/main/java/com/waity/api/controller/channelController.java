@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
 
+@CrossOrigin
 @RestController
 public class channelController {
 	@Autowired
