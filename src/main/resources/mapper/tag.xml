@@ -7,6 +7,14 @@
 		from
 				yt_tag
     </select>
+	<select id="selectTagById" resultType="com.waity.api.dto.tagDTO">
+		select
+				*
+		from
+				yt_tag
+		WHERE
+				id = #{id}
+	</select>
     <select id="selectTagByNames" resultType="com.waity.api.dto.tagDTO">
 		select
 				*
