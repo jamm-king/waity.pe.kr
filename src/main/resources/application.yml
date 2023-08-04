@@ -2,21 +2,33 @@
 spring:
   datasource:
     hikari:
-      driverClassName: com.mysql.cj.jdbc.Driver
+      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       jdbcUrl: ${SPRING_DATASOURCE_URL}
       username: ${SPRING_DATASOURCE_USERNAME}
       password: ${SPRING_DATASOURCE_PASSWORD}
-
-
+      connection-test-query: SELECT NOW() FROM dual
 
 ## mybatis
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+## logger
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    org:
+      springframework: INFO
+    jdbc:
+      sqlonly: off
+      sqltiming: info
+      resultsettable: info
+      audit: off
+      resultset: off
+      connection: off
 
 ## youtube
-
 youtube:
   key: AIzaSyBzXpb-djwWT18JGwQCWLS3Fg4B_ZVLFfQ
   endpoint: https://www.googleapis.com/youtube/v3

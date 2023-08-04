@@ -14,12 +14,11 @@ import com.waity.api.mapper.videoMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class channelServiceImpl implements channelService {
 	@Autowired
 	private channelMapper channelMapper;
 	@Autowired
-	private videoMapper videoMapper;
+	private videoService videoService;
 	
 //	@Override
 //	public List<channelDTO> ChannelList(List<channelDTO> channelList) throws Exception {
@@ -77,8 +76,10 @@ public class channelServiceImpl implements channelService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteChannel(channelDTO channel) throws Exception {
-		videoMapper.deleteVideoByChannel(channel);
+		System.out.println("Channel Service: deleteChannel");
+		videoService.deleteVideoByChannel(channel);
 		channelMapper.deleteChannel(channel);
 	}
 
