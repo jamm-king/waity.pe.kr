@@ -14,7 +14,13 @@ public class videoServiceImpl implements videoService {
 	
 	@Autowired
 	private videoMapper videoMapper;
-	
+
+	@Override
+	public List<videoDTO> selectVideoAll() throws Exception {
+		List<videoDTO> videoList = videoMapper.selectVideoAll();
+		return videoList;
+	}
+
 	@Override
 	public List<videoDTO> selectVideoByChannelIds(int[] ids) throws Exception {
 		return videoMapper.selectVideoByChannelIds(ids);

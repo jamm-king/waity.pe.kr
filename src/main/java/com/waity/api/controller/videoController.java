@@ -16,6 +16,12 @@ public class videoController {
 	@Autowired
 	private videoService videoService;
 
+	@GetMapping("/api/video")
+	public List<videoDTO> selectVideoAll() throws Exception {
+		List<videoDTO> videoList = videoService.selectVideoAll();
+		return videoList;
+	}
+
 	@GetMapping(value = "/api/video", params = "channelIds")
 	public List<videoDTO> selectVideoByChannelIds(@RequestParam("channelIds") int[] ids) throws Exception {
 		List<videoDTO> videoList = videoService.selectVideoByChannelIds(ids);
