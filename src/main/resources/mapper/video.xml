@@ -71,7 +71,7 @@
 		where
 				id = #{id}
 	</update>
-	<delete id="deleteVideoByChannel" parameterType="com.waity.api.dto.channelDTO">
+	<delete id="deleteVideoByChannel" parameterType="int">
 		delete
 				A, B
 		from
@@ -81,6 +81,6 @@
 		on
 				A.id = B.video_id
 		where
-				B.channel_id = #{id}
+				B.channel_id = #{channelId}
 	</delete>
 </mapper>

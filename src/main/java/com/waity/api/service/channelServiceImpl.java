@@ -77,10 +77,10 @@ public class channelServiceImpl implements channelService {
 
 	@Override
 	@Transactional
-	public void deleteChannel(channelDTO channel) throws Exception {
+	public void deleteChannel(int id) throws Exception {
 		System.out.println("Channel Service: deleteChannel");
-		videoService.deleteVideoByChannel(channel);
-		channelMapper.deleteChannel(channel);
+		videoService.deleteVideoByChannel(id);
+		channelMapper.deleteChannel(id);
 	}
 
 }

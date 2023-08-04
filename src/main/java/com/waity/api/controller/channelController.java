@@ -46,9 +46,9 @@ public class channelController {
 		channelService.insertChannel(channel);
 	}
 
-	@DeleteMapping("/api/channel")
-	public void deleteChannel(@RequestBody channelDTO channel) throws Exception{
+	@DeleteMapping("/api/channel/{id}")
+	public void deleteChannel(@PathVariable int id) throws Exception{
 		System.out.println("Channel Controller: deleteChannel");
-		channelService.deleteChannel(channel);
+		channelService.deleteChannel(id);
 	}
 }
