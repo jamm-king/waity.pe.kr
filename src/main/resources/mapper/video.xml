@@ -7,6 +7,14 @@
 		FROM
 				yt_video
 	</select>
+	<select id="selectVideoById" resultType="com.waity.api.dto.videoDTO">
+		SELECT
+				*
+		FROM
+				yt_video
+		WHERE
+				id = #{id}
+	</select>
 	<select id="selectVideoByVideoId" resultType="com.waity.api.dto.videoDTO">
 		SELECT
 				*
