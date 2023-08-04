@@ -36,7 +36,7 @@ public class tagServiceImpl implements tagService {
 		tagMapper.updateTag(tag);
 	}
 	@Override
-	public void deleteTag(tagDTO tag) throws Exception {
-		tagMapper.deleteTag(tag);
+	public void deleteTag(int id) throws Exception {
+		tagMapper.deleteTag(id);
 	}
 }

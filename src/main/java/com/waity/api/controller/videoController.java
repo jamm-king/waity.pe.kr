@@ -44,4 +44,9 @@ public class videoController {
 		videoService.updateVideo(video);
 	}
 
+	@DeleteMapping("/api/video/{id}")
+	public void deleteVideo(@PathVariable int id) throws Exception {
+		videoService.deleteVideo(id);
+	}
+
 }

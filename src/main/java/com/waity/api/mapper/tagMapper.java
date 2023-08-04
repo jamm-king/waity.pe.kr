@@ -13,5 +13,5 @@ public interface tagMapper {
 	List<tagDTO> selectTagByNames(String[] names) throws Exception;
 	void insertTag(tagDTO tag) throws Exception;
 	void updateTag(tagDTO tag) throws Exception;
-	void deleteTag(tagDTO tag) throws Exception;
+	void deleteTag(int id) throws Exception;
 }

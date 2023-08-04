@@ -44,6 +44,11 @@ public class videoServiceImpl implements videoService {
 	}
 
 	@Override
+	public void deleteVideo(int id) throws Exception {
+		videoMapper.deleteVideo(id);
+	}
+
+	@Override
 	public void deleteVideoByChannel(int channelId) throws Exception {
 		System.out.println("Video Service: deleteVideoByChannel");
 		videoMapper.deleteVideoByChannel(channelId);

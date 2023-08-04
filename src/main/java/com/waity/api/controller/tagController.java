@@ -49,8 +49,8 @@ public class tagController {
 		tagService.updateTag(tag);
 	}
 
-	@DeleteMapping("/api/tag")
-	public void deleteTag(@RequestBody tagDTO tag) throws Exception {
-		tagService.deleteTag(tag);
+	@DeleteMapping("/api/tag/{id}")
+	public void deleteTag(@PathVariable int id) throws Exception {
+		tagService.deleteTag(id);
 	}
 }
