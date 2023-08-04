@@ -23,6 +23,11 @@ public class videoServiceImpl implements videoService {
 	}
 
 	@Override
+	public void updateVideo(videoDTO video) throws Exception {
+		videoMapper.updateVideo(video);
+	}
+
+	@Override
 	public videoDTO selectVideoById(int id) throws Exception {
 		videoDTO video = videoMapper.selectVideoById(id);
 		return video;

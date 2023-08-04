@@ -39,5 +39,9 @@ public class videoController {
 		videoService.insertVideo(video);
 	}
 
+	@PutMapping("/api/video")
+	public void updateVideo(@RequestBody videoDTO video) throws Exception {
+		videoService.updateVideo(video);
+	}
 
 }

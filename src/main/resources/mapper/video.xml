@@ -61,6 +61,16 @@
 		from
 				yt_video
     </select>
+	<update id="updateVideo" parameterType="com.waity.api.dto.videoDTO">
+		update
+				yt_video
+		set
+				video_id = #{videoId},
+				title = #{title},
+				thumbnail = #{thumbnail},
+		where
+				id = #{id}
+	</update>
 	<delete id="deleteVideoByChannel" parameterType="com.waity.api.dto.channelDTO">
 		delete
 				A, B
