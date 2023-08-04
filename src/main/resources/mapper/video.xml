@@ -67,7 +67,7 @@
 		set
 				video_id = #{videoId},
 				title = #{title},
-				thumbnail = #{thumbnail},
+				thumbnail = #{thumbnail}
 		where
 				id = #{id}
 	</update>
