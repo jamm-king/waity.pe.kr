@@ -22,6 +22,12 @@ public class videoController {
 		return videoList;
 	}
 
+	@GetMapping(path = "/api/video/{id}")
+	public videoDTO selectVideoById(@PathVariable("id") int id) throws Exception {
+		videoDTO video = videoService.selectVideoById(id);
+		return video;
+	}
+
 	@GetMapping(value = "/api/video", params = "channelIds")
 	public List<videoDTO> selectVideoByChannelIds(@RequestParam("channelIds") int[] ids) throws Exception {
 		List<videoDTO> videoList = videoService.selectVideoByChannelIds(ids);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.waity.api.dto.videoDTO;
 import com.waity.api.mapper.videoMapper;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class videoServiceImpl implements videoService {
@@ -19,6 +20,12 @@ public class videoServiceImpl implements videoService {
 	public List<videoDTO> selectVideoAll() throws Exception {
 		List<videoDTO> videoList = videoMapper.selectVideoAll();
 		return videoList;
+	}
+
+	@Override
+	public videoDTO selectVideoById(int id) throws Exception {
+		videoDTO video = videoMapper.selectVideoById(id);
+		return video;
 	}
 
 	@Override
