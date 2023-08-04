@@ -14,5 +14,5 @@ public interface channelService {
 
 	void updateChannel(channelDTO channel) throws Exception;
 	void insertChannel(channelDTO channel) throws Exception;
-	void deleteChannel(channelDTO channel) throws Exception;
+	void deleteChannel(int id) throws Exception;
 }

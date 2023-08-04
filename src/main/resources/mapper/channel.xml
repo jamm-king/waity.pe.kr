@@ -101,7 +101,7 @@
 		where
 				id = #{id}
 	</update>
-	<delete id="deleteChannel" parameterType="com.waity.api.dto.channelDTO">
+	<delete id="deleteChannel" parameterType="int">
 		delete from
 				yt_channel
 		where
