@@ -71,6 +71,12 @@
 		where
 				id = #{id}
 	</update>
+	<delete id="deleteVideo" parameterType="int">
+		delete from
+				yt_video
+		where
+				id = #{id}
+	</delete>
 	<delete id="deleteVideoByChannel" parameterType="int">
 		delete
 				A, B

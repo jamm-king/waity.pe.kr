@@ -43,7 +43,7 @@
 		where
 				id = #{id}
 	</update>
-	<delete id="deleteTag" parameterType="com.waity.api.dto.tagDTO">
+	<delete id="deleteTag" parameterType="int">
 		delete from
 				yt_tag
 		where

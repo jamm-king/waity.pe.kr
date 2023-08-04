@@ -15,5 +15,6 @@ public interface videoMapper {
 	List<videoDTO> selectVideoByChannelIds(int[] ids) throws Exception;
 	void insertVideo(videoDTO video) throws Exception;
 	void updateVideo(videoDTO video) throws Exception;
+	void deleteVideo(int id) throws Exception;
 	void deleteVideoByChannel(int channelId) throws Exception;
 }
