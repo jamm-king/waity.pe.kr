@@ -3,13 +3,13 @@ package com.waity.api.controller;
 import java.util.List;
 
 
+import com.waity.api.dto.channelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.waity.api.dto.tagDTO;
 import com.waity.api.service.tagService;
 
-@CrossOrigin
 @RestController
 public class tagController {
 
@@ -20,6 +20,11 @@ public class tagController {
 	public List<tagDTO> selectTagAll() throws Exception {
 		List<tagDTO> tagList = tagService.selectTagAll();
 		return tagList;
+	}
+	@GetMapping(path = "/api/tag/{id}")
+	public tagDTO selectTagById(@PathVariable("id") int id) throws Exception {
+		System.out.println("GET selectTagById");
+		return tagService.selectTagById(id);
 	}
 //	@GetMapping("/api/tag/{names}")
 //	public List<tagDTO> selectTagByName(@PathVariable("names") String[] names) throws Exception {

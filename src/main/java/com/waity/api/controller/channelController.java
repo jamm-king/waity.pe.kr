@@ -16,14 +16,12 @@ public class channelController {
 	@Autowired
 	private channelService channelService;
 
-	@CrossOrigin
 	@GetMapping("/api/channel")
 	public List<channelDTO> selectChannelAll() throws Exception {
 		System.out.println("GET selectChannelAll");
 		return channelService.selectChannelAll();
 	}
 
-	@CrossOrigin
 	@GetMapping(path = "/api/channel/{id}")
 	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
 		System.out.println("GET selectChannelById");
@@ -39,7 +37,6 @@ public class channelController {
 		return channelService.selectChannelByTags(tags);
 	}
 
-	@CrossOrigin
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
 		System.out.println("PUT updateChannel");
