@@ -15,6 +15,17 @@
 		WHERE
 				id = #{id}
 	</select>
+	<select id="selectTagByIds" resultType="com.waity.api.dto.tagDTO">
+		select
+				*
+		from
+				yt_tag
+		WHERE
+				id IN
+		<foreach item="id" collection="list" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
     <select id="selectTagByNames" resultType="com.waity.api.dto.tagDTO">
 		select
 				*
@@ -28,7 +39,7 @@
     </select>
 	<select id="selectTagByChannelId" resultType="com.waity.api.dto.tagDTO">
 		select
-				C.tag_name
+				C.id, C.tag_name
 		from
 				yt_channel A
 		INNER JOIN

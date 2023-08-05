@@ -56,15 +56,15 @@
     </select>
 	<select id="selectChannelIdAll" resultType="String">
 		select
-		channel_id
+				channel_id
 		from
-		yt_channel
+				yt_channel
 	</select>
 	<select id="getLastId" resultType="int">
 		select
-		max(id)
+				max(id)
 		from
-		yt_channel
+				yt_channel
 	</select>
     <insert id="insertChannel" parameterType="com.waity.api.dto.channelDTO">
 		INSERT INTO
@@ -106,5 +106,25 @@
 				yt_channel
 		where
 				id = #{id}
+	</delete>
+	<insert id="insertChannelTags" parameterType="hashmap">
+		insert into
+				yt_channel_tag (channel_id, tag_id)
+		values
+		<foreach collection="tagIds" item="tagId" open="(" close=")" separator="),(">
+				#{channelId},
+				#{tagId}
+		</foreach>
+	</insert>
+	<delete id="deleteChannelTags" parameterType="hashmap">
+		delete from
+				yt_channel_tag
+		where
+				channel_id = #{channelId}
+		and
+				tag_id in
+		<foreach item="tagId" collection="tagIds" open="(" close=")" separator=",">
+			#{tagId}
+		</foreach>
 	</delete>
 </mapper>

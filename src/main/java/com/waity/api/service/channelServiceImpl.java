@@ -2,9 +2,12 @@ package com.waity.api.service;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.waity.api.dto.channelDTO;
+import com.waity.api.dto.tagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class channelServiceImpl implements channelService {
 	@Autowired
 	private channelMapper channelMapper;
+	@Autowired
+	private tagService tagService;
 	@Autowired
 	private videoService videoService;
 	
@@ -50,17 +55,14 @@ public class channelServiceImpl implements channelService {
 	public List<channelDTO> selectChannelAll() throws Exception {
 		return channelMapper.selectChannelAll();
 	}
-
 	@Override
 	public channelDTO selectChannelById(int id) throws Exception {
 		return channelMapper.selectChannelById(id);
 	}
-
 	@Override
 	public List<channelDTO> selectChannelByIds(String[] ids) throws Exception {
 		return channelMapper.selectChannelByIds(ids);
 	}
-
 	@Override
 	public List<channelDTO> selectChannelByTags(String[] tags) throws Exception {
 		return channelMapper.selectChannelByTags(tags);
@@ -69,12 +71,10 @@ public class channelServiceImpl implements channelService {
 	public void updateChannel(channelDTO channel) throws Exception {
 		channelMapper.updateChannel(channel);
 	}
-
 	@Override
 	public void insertChannel(channelDTO channel) throws Exception {
 		channelMapper.insertChannel(channel);
 	}
-
 	@Override
 	@Transactional
 	public void deleteChannel(int id) throws Exception {
@@ -83,4 +83,35 @@ public class channelServiceImpl implements channelService {
 		channelMapper.deleteChannel(id);
 	}
 
+	@Override
+	public void insertChannelTags(int channelId, List<Integer> tagIds) throws Exception {
+		HashMap<String, Object> hm = new HashMap<>();
+		hm.put("channelId", channelId);
+		hm.put("tagIds", tagIds);
+		channelMapper.insertChannelTags(hm);
+	}
+	@Transactional
+	@Override
+	public void updateChannelTags(int channelId, List<Integer> tagIds) throws Exception {
+		List<tagDTO> originTags = tagService.selectTagByChannelId(channelId);
+		List<tagDTO> targetTags = tagService.selectTagByIds(tagIds);
+		List<Integer> originTagIds = new ArrayList<>();
+		List<Integer> targetTagIds = new ArrayList<>();
+
+		for(int i = 0; i < originTags.size(); i++) {
+			originTagIds.add(originTags.get(i).getId());
+		}
+		for(int i = 0; i < targetTags.size(); i++) {
+			targetTagIds.add(targetTags.get(i).getId());
+		}
+		deleteChannelTags(channelId, originTagIds);
+		insertChannelTags(channelId, targetTagIds);
+	}
+	@Override
+	public void deleteChannelTags(int channelId, List<Integer> tagIds) throws Exception {
+		HashMap<String, Object> hm = new HashMap<>();
+		hm.put("channelId", channelId);
+		hm.put("tagIds", tagIds);
+		channelMapper.deleteChannelTags(hm);
+	}
 }

@@ -23,6 +23,10 @@ public class tagServiceImpl implements tagService {
 		return tagMapper.selectTagById(id);
 	}
 	@Override
+	public List<tagDTO> selectTagByIds(List<Integer> ids) throws Exception {
+		return tagMapper.selectTagByIds(ids);
+	}
+	@Override
 	public List<tagDTO> selectTagByNames(String[] names) throws Exception {
 		return tagMapper.selectTagByNames(names);
 	}
