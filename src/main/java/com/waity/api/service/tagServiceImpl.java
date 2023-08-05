@@ -26,6 +26,12 @@ public class tagServiceImpl implements tagService {
 	public List<tagDTO> selectTagByNames(String[] names) throws Exception {
 		return tagMapper.selectTagByNames(names);
 	}
+
+	@Override
+	public List<tagDTO> selectTagByChannelId(int channelId) throws Exception {
+		return tagMapper.selectTagByChannelId(channelId);
+	}
+
 	@Override
 	public void insertTag(tagDTO tag) throws Exception {
 		tagMapper.insertTag(tag);
