@@ -37,7 +37,10 @@ public class tagController {
 		return tagList;
 	}
 
-
+	@GetMapping(value = "/api/tag", params = "channelId")
+	public List<tagDTO> selectTagByChannelId(@RequestParam("channelId") int channelId) throws Exception {
+		return tagService.selectTagByChannelId(channelId);
+	}
 
 	@PostMapping("/api/tag")
 	public void insertTag(@RequestBody tagDTO tag) throws Exception {
