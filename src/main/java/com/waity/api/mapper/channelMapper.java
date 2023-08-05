@@ -1,6 +1,8 @@
 package com.waity.api.mapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import com.waity.api.dto.channelDTO;
@@ -15,4 +17,7 @@ public interface channelMapper {
 	void updateChannel(channelDTO channel) throws Exception;
 	void insertChannel(channelDTO channel) throws Exception;
 	void deleteChannel(int id) throws Exception;
+
+	void insertChannelTags(HashMap<String, Object> hm) throws Exception;
+	void deleteChannelTags(HashMap<String, Object> hm) throws Exception;
 }

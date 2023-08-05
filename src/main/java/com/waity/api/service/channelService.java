@@ -15,4 +15,9 @@ public interface channelService {
 	void updateChannel(channelDTO channel) throws Exception;
 	void insertChannel(channelDTO channel) throws Exception;
 	void deleteChannel(int id) throws Exception;
+
+	// 채널-태그 관계에 대한 메소드
+	void insertChannelTags(int channelId, List<Integer> tagIds) throws Exception;
+	void updateChannelTags(int channelId, List<Integer> tagIds) throws Exception;
+	void deleteChannelTags(int channelId, List<Integer> tagIds) throws Exception;
 }
