@@ -10,6 +10,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class scrapeServiceImpl implements scrapeService{
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Object parse(String url) throws Exception {
         Document doc = null;
@@ -39,7 +43,6 @@ public class scrapeServiceImpl implements scrapeService{
                 s = s.replace(";","");
                 break;
             }
-
         }
         JSONParser jsonParser = new JSONParser();
         Object obj = jsonParser.parse(s);
@@ -143,12 +146,15 @@ public class scrapeServiceImpl implements scrapeService{
         }
 
         channelDTO channel = new channelDTO();
+        channel.channelId = channelId;
         channel.title = title;
         channel.image = image;
         channel.keyword = keywords;
         channel.description = description;
         channel.viewCount = viewCount;
         channel.subscriptionCount = subscriptionCount;
+
+        logger.info("###############\nscraped data for " + title + "###############");
 
         return channel;
     }

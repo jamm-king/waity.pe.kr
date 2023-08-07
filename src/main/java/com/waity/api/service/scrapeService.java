@@ -5,6 +5,5 @@ import org.json.simple.JSONObject;
 
 
 public interface scrapeService {
-
     channelDTO scrapeChannel(String channelId) throws Exception;
 }

@@ -20,7 +20,7 @@ public class youtubeDataApiServiceImpl implements youtubeDataApiService{
 
     //API를 사용해서 최신 Video들을 받아오는 함수
     //받아온 Video에서 channelId를 추출하여 반환
-    public List<String> videosList(int maxResults) throws Exception {
+    public List<String> channelList(int maxResults) throws Exception {
         String uri = endpoint + "/videos" + "?part=snippet " + "&key=" + key + "&maxResults=" + maxResults + "&regionCode=KR" + "&chart=mostPopular";
 
         RestTemplate restTemplate = new RestTemplate();
