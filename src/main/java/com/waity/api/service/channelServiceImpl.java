@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.waity.api.dto.channelDTO;
 import com.waity.api.dto.tagDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,12 @@ public class channelServiceImpl implements channelService {
 	private tagService tagService;
 	@Autowired
 	private videoService videoService;
+	@Autowired
+	private youtubeDataApiService youtubeDataApiService;
+	@Autowired
+	private scrapeService scrapeService;
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 //	@Override
 //	public List<channelDTO> ChannelList(List<channelDTO> channelList) throws Exception {
@@ -76,6 +84,10 @@ public class channelServiceImpl implements channelService {
 		channelMapper.insertChannel(channel);
 	}
 	@Override
+	public void insertChannels(List<channelDTO> channels) throws Exception {
+		channelMapper.insertChannels(channels);
+	}
+	@Override
 	@Transactional
 	public void deleteChannel(int id) throws Exception {
 		System.out.println("Channel Service: deleteChannel");
@@ -113,5 +125,28 @@ public class channelServiceImpl implements channelService {
 		hm.put("channelId", channelId);
 		hm.put("tagIds", tagIds);
 		channelMapper.deleteChannelTags(hm);
+	}
+
+	@Override
+	public HashMap<String, List<channelDTO>> createChannels(int maxResults) throws Exception {
+		List<String> channelIds = youtubeDataApiService.channelList(maxResults);
+		List<channelDTO> success = new ArrayList<>();
+		List<channelDTO> fail = new ArrayList<>();
+		for(int i = 0; i < channelIds.size(); i++) {
+			String channelId = channelIds.get(i);
+			channelDTO channel = scrapeService.scrapeChannel(channelId);
+			try {
+				insertChannel(channel);
+				success.add(channel);
+			} catch(Exception e) {
+				fail.add(channel);
+				logger.info(e.getStackTrace().toString());
+			}
+		}
+		HashMap<String, List<channelDTO>> hm = new HashMap<>();
+		hm.put("success", success);
+		hm.put("fail", fail);
+
+		return hm;
 	}
 }

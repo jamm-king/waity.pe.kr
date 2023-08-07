@@ -66,9 +66,18 @@
 		from
 				yt_channel
 	</select>
-    <insert id="insertChannel" parameterType="com.waity.api.dto.channelDTO">
+    <insert id="insertChannel" parameterType="com.waity.api.dto.channelDTO" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
-				yt_channel (channel_id, keyword, image, title, subscription_count, view_count, description)
+				yt_channel (
+						channel_id,
+						keyword,
+						image,
+						title,
+						subscription_count,
+						view_count,
+						description,
+						video_count
+				)
 		VALUES(
 				#{channelId},
 				#{keyword},
@@ -77,6 +86,7 @@
 			 	#{subscriptionCount},
 			 	#{viewCount},
 			 	#{description},
+				#{videoCount}
 			 )
 	 	ON DUPLICATE KEY UPDATE
 				keyword = #{keyword},
@@ -86,6 +96,30 @@
 				view_count = #{viewCount},
 				description = #{description}
     </insert>
+	<insert id="insertChannels" parameterType="com.waity.api.dto.channelDTO">
+		insert into
+				yt_channel (channel_id, keyword, image, title, subscription_count, view_count, description, video_count)
+		values
+		<foreach collection="list" item="channel" open="(" close=")" separator="),(">
+				#{channel.channelId},
+				#{channel.keyword},
+				#{channel.image},
+				#{channel.title},
+				#{channel.subscriptionCount},
+				#{channel.viewCount},
+				#{channel.description},
+				#{channel.videoCount}
+		</foreach>
+		on duplicate key update
+				channel_id = values(channel_id),
+				keyword = values(keyword),
+				image = values(image),
+				title = values(title),
+				subscription_count = values(subscription_count),
+				view_count = values(view_count),
+				description = values(description),
+				video_count = values(video_count)
+	</insert>
 	<update id="updateChannel" parameterType="com.waity.api.dto.channelDTO">
 		update
 				yt_channel

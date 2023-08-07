@@ -1,10 +1,13 @@
 package com.waity.api.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 import com.waity.api.dto.channelDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,8 @@ import com.waity.api.service.channelService;
 public class channelController {
 	@Autowired
 	private channelService channelService;
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@GetMapping("/api/channel")
 	public List<channelDTO> selectChannelAll() throws Exception {
@@ -33,9 +38,10 @@ public class channelController {
 	public List<channelDTO> selectChannelByTags(@RequestParam("tags") String[] tags) throws Exception {
 		return channelService.selectChannelByTags(tags);
 	}
-	@PostMapping("/api/channel")
-	public void insertChannel(@RequestBody channelDTO channel) throws Exception {
-		channelService.insertChannel(channel);
+	@PostMapping(value = "/api/channel")
+	public HashMap<String, List<channelDTO>> insertChannels(@RequestBody HashMap<String, String> requestBody) throws Exception {
+		int maxResults = Integer.parseInt(requestBody.get("maxResults"));
+		return channelService.createChannels(maxResults);
 	}
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
