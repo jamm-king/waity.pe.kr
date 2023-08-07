@@ -10,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -111,7 +112,12 @@ public class scrapeServiceImpl implements scrapeService{
         String subscriberCount = ((JSONArray)JsonPath.read(obj.toString(),"$..subscriberCountText.simpleText")).get(0).toString();
 
         //description
-		String description = ((JSONArray)JsonPath.read(obj.toString(),"$..description.simpleText")).get(0).toString();
+        String description = "";
+        try {
+            description = ((JSONArray) JsonPath.read(obj.toString(), "$..description.simpleText")).get(0).toString();
+        } catch(Exception e) {
+            logger.warn(title + ": description이 없는 채널");
+        }
 
         //조회수
         //조회수도 파싱해서 넣어야함
@@ -158,5 +164,4 @@ public class scrapeServiceImpl implements scrapeService{
 
         return channel;
     }
-
 }

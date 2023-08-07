@@ -6,6 +6,7 @@ import java.util.List;
 
 
 import com.waity.api.dto.channelDTO;
+import com.waity.api.service.scrapeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import com.waity.api.service.channelService;
 public class channelController {
 	@Autowired
 	private channelService channelService;
+	@Autowired
+	private scrapeService scrapeService;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
