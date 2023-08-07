@@ -68,16 +68,16 @@
 	</select>
     <insert id="insertChannel" parameterType="com.waity.api.dto.channelDTO" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
-				yt_channel (
-						channel_id,
-						keyword,
-						image,
-						title,
-						subscription_count,
-						view_count,
-						description,
-						video_count
-				)
+			yt_channel (
+				channel_id,
+				keyword,
+				image,
+				title,
+				subscription_count,
+				view_count,
+				description,
+				video_count
+			)
 		VALUES(
 				#{channelId},
 				#{keyword},

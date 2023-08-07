@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.waity.api.dto.channelDTO;
 import com.waity.api.dto.tagDTO;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
