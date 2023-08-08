@@ -12,9 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 public class channelController {
@@ -41,11 +43,11 @@ public class channelController {
 	public List<channelDTO> selectChannelByTags(@RequestParam("tags") String[] tags) throws Exception {
 		return channelService.selectChannelByTags(tags);
 	}
-	@PostMapping(value = "/api/channel")
-	public HashMap<String, List<channelDTO>> insertChannels(@RequestBody HashMap<String, String> requestBody) throws Exception {
-		int maxResults = Integer.parseInt(requestBody.get("maxResults"));
-		return channelService.createChannels(maxResults);
-	}
+//	@PostMapping(value = "/api/channel")
+//	public SseEmitter insertChannels(@RequestBody HashMap<String, String> requestBody) throws Exception {
+//		int maxResults = Integer.parseInt(requestBody.get("maxResults"));
+//		return scrapeService.scrapeChannels(maxResults);
+//	}
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
 		channelService.updateChannel(channel);
@@ -57,7 +59,7 @@ public class channelController {
 	}
 
 	@PostMapping("/api/channel/tag")
-	public void inserChannelTags(@RequestBody HashMap<String, Object> hm) throws Exception {
+	public void insertChannelTags(@RequestBody HashMap<String, Object> hm) throws Exception {
 		int channelId = (int)hm.get("channelId");
 		List<Integer> tagIds = (List<Integer>)hm.get("tagIds");
 		channelService.insertChannelTags(channelId, tagIds);

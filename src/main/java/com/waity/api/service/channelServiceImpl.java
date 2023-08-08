@@ -18,6 +18,7 @@ import com.waity.api.dto.videoDTO;
 import com.waity.api.mapper.channelMapper;
 import com.waity.api.mapper.videoMapper;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Service
 public class channelServiceImpl implements channelService {
@@ -27,10 +28,6 @@ public class channelServiceImpl implements channelService {
 	private tagService tagService;
 	@Autowired
 	private videoService videoService;
-	@Autowired
-	private youtubeDataApiService youtubeDataApiService;
-	@Autowired
-	private scrapeService scrapeService;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -126,28 +123,5 @@ public class channelServiceImpl implements channelService {
 		hm.put("channelId", channelId);
 		hm.put("tagIds", tagIds);
 		channelMapper.deleteChannelTags(hm);
-	}
-
-	@Override
-	public HashMap<String, List<channelDTO>> createChannels(int maxResults) throws Exception {
-		List<String> channelIds = youtubeDataApiService.channelList(maxResults);
-		List<channelDTO> success = new ArrayList<>();
-		List<channelDTO> fail = new ArrayList<>();
-		for(int i = 0; i < channelIds.size(); i++) {
-			String channelId = channelIds.get(i);
-			channelDTO channel = scrapeService.scrapeChannel(channelId);
-			try {
-				insertChannel(channel);
-				success.add(channel);
-			} catch(Exception e) {
-				fail.add(channel);
-				logger.info(e.getStackTrace().toString());
-			}
-		}
-		HashMap<String, List<channelDTO>> hm = new HashMap<>();
-		hm.put("success", success);
-		hm.put("fail", fail);
-
-		return hm;
 	}
 }

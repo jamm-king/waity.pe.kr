@@ -22,7 +22,4 @@ public interface channelService {
 	void insertChannelTags(int channelId, List<Integer> tagIds) throws Exception;
 	void updateChannelTags(int channelId, List<Integer> tagIds) throws Exception;
 	void deleteChannelTags(int channelId, List<Integer> tagIds) throws Exception;
-
-	// youtubeDataApi 통해 얻은 channelId로 스크래핑하여 채널 저장
-	HashMap<String, List<channelDTO>> createChannels(int maxResults) throws Exception;
 }

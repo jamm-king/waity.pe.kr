@@ -13,7 +13,9 @@ import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -22,6 +24,13 @@ import java.util.regex.Pattern;
 
 @Service
 public class scrapeServiceImpl implements scrapeService{
+
+    @Autowired
+    youtubeDataApiService youtubeDataApiService;
+    @Autowired
+    channelService channelService;
+
+    SseEmitter sseEmitter;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -163,5 +172,33 @@ public class scrapeServiceImpl implements scrapeService{
         logger.info("###############\nscraped data for " + title + "###############");
 
         return channel;
+    }
+    public SseEmitter scrapeChannels(int maxResults) throws Exception {
+        sseEmitter = new SseEmitter(-1L);
+        List<String> channelIds = youtubeDataApiService.channelList(maxResults);
+        List<channelDTO> success = new ArrayList<>();
+        List<channelDTO> fail = new ArrayList<>();
+        for(int i = 0; i < channelIds.size(); i++) {
+            String channelId = channelIds.get(i);
+            channelDTO channel = scrapeChannel(channelId);
+            try {
+                channelService.insertChannel(channel);
+                success.add(channel);
+                sseEmitter.send(SseEmitter.event()
+                        .name("success")
+                        .data(channel));
+            } catch(Exception e) {
+                fail.add(channel);
+                sseEmitter.send(SseEmitter.event()
+                        .name("fail")
+                        .data(channel));
+                logger.info(e.getStackTrace().toString());
+            }
+        }
+        HashMap<String, List<channelDTO>> hm = new HashMap<>();
+		hm.put("success", success);
+		hm.put("fail", fail);
+
+		return sseEmitter;
     }
 }
