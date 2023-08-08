@@ -9,12 +9,13 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 @Slf4j
 public class sseService {
-    private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    private ConcurrentHashMap<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     @Autowired
     youtubeDataApiService youtubeDataApiService;
     @Autowired
@@ -22,13 +23,15 @@ public class sseService {
     @Autowired
     channelService channelService;
 
-    public SseEmitter add(SseEmitter emitter) {
-        this.emitters.add(emitter);
+    public SseEmitter add(String key) throws Exception {
+        SseEmitter emitter = new SseEmitter(1L * 60 * 1000);
+        this.emitters.put(key, emitter);
         log.info("new emitter added: {}", emitter);
-        log.info("emitter list size: {}", emitters.size());
+        log.info("emitter set size: {}", emitters.size());
+        // 만료되면 리스트에서 삭제
         emitter.onCompletion(() -> {
             log.info("onCompletion callback");
-            this.emitters.remove(emitter);    // 만료되면 리스트에서 삭제
+            this.emitters.remove(key);
         });
         emitter.onTimeout(() -> {
             log.info("onTimeout callback");
@@ -37,33 +40,27 @@ public class sseService {
 
         return emitter;
     }
-    public void scrapeChannels(int maxResults) throws Exception {
-        SseEmitter emitter = emitters.get(0);
+    public void scrapeChannels(String key, int maxResults) throws Exception {
+        SseEmitter emitter = emitters.get(key);
         List<String> channelIds = youtubeDataApiService.channelList(maxResults);
-        List<channelDTO> success = new ArrayList<>();
-        List<channelDTO> fail = new ArrayList<>();
         for(int i = 0; i < channelIds.size(); i++) {
             String channelId = channelIds.get(i);
             channelDTO channel = scrapeService.scrapeChannel(channelId);
             try {
                 channelService.insertChannel(channel);
-                success.add(channel);
                 emitter.send(SseEmitter.event()
                         .name("success")
                         .data(channel));
             } catch(Exception e) {
-                fail.add(channel);
                 emitter.send(SseEmitter.event()
                         .name("fail")
                         .data(channel));
                 log.info(e.getStackTrace().toString());
             }
         }
-        HashMap<String, List<channelDTO>> hm = new HashMap<>();
-        hm.put("success", success);
-        hm.put("fail", fail);
         emitter.send(SseEmitter.event()
                 .name("end")
                 .data("end"));
+        emitter.complete();
     }
 }
