@@ -43,24 +43,32 @@ public class sseService {
     public void scrapeChannels(String key, int maxResults) throws Exception {
         SseEmitter emitter = emitters.get(key);
         List<String> channelIds = youtubeDataApiService.channelList(maxResults);
+        List<channelDTO> success = new ArrayList<>();
+        List<channelDTO> fail = new ArrayList<>();
+
         for(int i = 0; i < channelIds.size(); i++) {
             String channelId = channelIds.get(i);
             channelDTO channel = scrapeService.scrapeChannel(channelId);
             try {
                 channelService.insertChannel(channel);
                 emitter.send(SseEmitter.event()
-                        .name("success")
-                        .data(channel));
+                        .name("progress")
+                        .data(String.format("%d/%d", i+1, channelIds.size())));
+                success.add(channel);
             } catch(Exception e) {
                 emitter.send(SseEmitter.event()
-                        .name("fail")
-                        .data(channel));
+                        .name("progress")
+                        .data(String.format("%d/%d", i+1, channelIds.size())));
                 log.info(e.getStackTrace().toString());
+                fail.add(channel);
             }
         }
+        HashMap<String,List<channelDTO>> hm = new HashMap<>();
+        hm.put("success",success);
+        hm.put("fail",fail);
         emitter.send(SseEmitter.event()
                 .name("end")
-                .data("end"));
+                .data(hm));
         emitter.complete();
     }
 }
