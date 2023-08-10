@@ -122,11 +122,7 @@ public class scrapeServiceImpl implements scrapeService{
 
         //description
         String description = "";
-        try {
-            description = ((JSONArray) JsonPath.read(obj.toString(), "$..description.simpleText")).get(0).toString();
-        } catch(Exception e) {
-            logger.warn(title + ": description이 없는 채널");
-        }
+        description = ((JSONArray) JsonPath.read(obj.toString(), "$..description.simpleText")).get(0).toString();
 
         //조회수
         //조회수도 파싱해서 넣어야함
@@ -172,33 +168,5 @@ public class scrapeServiceImpl implements scrapeService{
         logger.info("###############\nscraped data for " + title + "###############");
 
         return channel;
-    }
-    public SseEmitter scrapeChannels(int maxResults) throws Exception {
-        sseEmitter = new SseEmitter(-1L);
-        List<String> channelIds = youtubeDataApiService.channelList(maxResults);
-        List<channelDTO> success = new ArrayList<>();
-        List<channelDTO> fail = new ArrayList<>();
-        for(int i = 0; i < channelIds.size(); i++) {
-            String channelId = channelIds.get(i);
-            channelDTO channel = scrapeChannel(channelId);
-            try {
-                channelService.insertChannel(channel);
-                success.add(channel);
-                sseEmitter.send(SseEmitter.event()
-                        .name("success")
-                        .data(channel));
-            } catch(Exception e) {
-                fail.add(channel);
-                sseEmitter.send(SseEmitter.event()
-                        .name("fail")
-                        .data(channel));
-                logger.info(e.getStackTrace().toString());
-            }
-        }
-        HashMap<String, List<channelDTO>> hm = new HashMap<>();
-		hm.put("success", success);
-		hm.put("fail", fail);
-
-		return sseEmitter;
     }
 }

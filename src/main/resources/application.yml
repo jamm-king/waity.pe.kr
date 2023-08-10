@@ -1,11 +1,49 @@
 ## mysql
 spring:
+  config.activate.on-profile: default
   datasource:
     hikari:
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       jdbcUrl: ${SPRING_DATASOURCE_URL}
       username: ${SPRING_DATASOURCE_USERNAME}
       password: ${SPRING_DATASOURCE_PASSWORD}
+      connection-test-query: SELECT NOW() FROM dual
+
+## mybatis
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+## logger
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    org:
+      springframework: INFO
+    jdbc:
+      sqlonly: off
+      sqltiming: info
+      resultsettable: info
+      audit: off
+      resultset: off
+      connection: off
+
+## youtube
+youtube:
+  key: AIzaSyBzXpb-djwWT18JGwQCWLS3Fg4B_ZVLFfQ
+  endpoint: https://www.googleapis.com/youtube/v3
+
+---
+
+spring:
+  config.activate.on-profile: test
+  datasource:
+    hikari:
+      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbcUrl: jdbc:log4jdbc:mysql://localhost:3306/yt?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: Woals0313!
       connection-test-query: SELECT NOW() FROM dual
 
 ## mybatis

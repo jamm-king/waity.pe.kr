@@ -8,6 +8,9 @@ import java.util.Map;
 
 import com.waity.api.dto.channelDTO;
 import com.waity.api.dto.tagDTO;
+import com.waity.api.global.error.exception.ErrorCode;
+import com.waity.api.global.error.exception.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Service
+@Slf4j
 public class channelServiceImpl implements channelService {
 	@Autowired
 	private channelMapper channelMapper;
@@ -63,7 +67,11 @@ public class channelServiceImpl implements channelService {
 	}
 	@Override
 	public channelDTO selectChannelById(int id) throws Exception {
-		return channelMapper.selectChannelById(id);
+		channelDTO channel = channelMapper.selectChannelById(id);
+		if(channel == null) {
+			throw new NotFoundException("entity not found.", ErrorCode.ENTITY_NOT_FOUND);
+		}
+		return channel;
 	}
 	@Override
 	public List<channelDTO> selectChannelByIds(String[] ids) throws Exception {

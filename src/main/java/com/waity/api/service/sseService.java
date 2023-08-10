@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,27 +46,32 @@ public class sseService {
         List<String> channelIds = youtubeDataApiService.channelList(maxResults);
         List<channelDTO> success = new ArrayList<>();
         List<channelDTO> fail = new ArrayList<>();
+        HashMap<String, Object> exception = new HashMap<>();
 
         for(int i = 0; i < channelIds.size(); i++) {
             String channelId = channelIds.get(i);
-            channelDTO channel = scrapeService.scrapeChannel(channelId);
             try {
-                channelService.insertChannel(channel);
-                emitter.send(SseEmitter.event()
-                        .name("progress")
-                        .data(String.format("%d/%d", i+1, channelIds.size())));
-                success.add(channel);
-            } catch(Exception e) {
-                emitter.send(SseEmitter.event()
-                        .name("progress")
-                        .data(String.format("%d/%d", i+1, channelIds.size())));
-                log.info(e.getStackTrace().toString());
-                fail.add(channel);
+                channelDTO channel = scrapeService.scrapeChannel(channelId);
+                try {
+                    channelService.insertChannel(channel);
+                    success.add(channel);
+                } catch (Exception e) {
+                    fail.add(channel);
+                    throw e;
+                } finally {
+                    emitter.send(SseEmitter.event()
+                            .name("progress")
+                            .data(String.format("%d/%d", i + 1, channelIds.size())));
+                }
+            } catch (Exception e) {
+                exception.put(channelId, e.toString());
+                log.warn(e.getStackTrace().toString());
             }
         }
-        HashMap<String,List<channelDTO>> hm = new HashMap<>();
-        hm.put("success",success);
-        hm.put("fail",fail);
+        HashMap<String, Object> hm = new HashMap<>();
+        hm.put("success", success);
+        hm.put("fail", fail);
+        hm.put("exception", exception);
         emitter.send(SseEmitter.event()
                 .name("end")
                 .data(hm));
