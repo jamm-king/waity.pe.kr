@@ -43,7 +43,7 @@ spring:
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       jdbcUrl: jdbc:log4jdbc:mysql://localhost:3306/yt?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
       username: root
-      password: Woals0313!
+      password: root
       connection-test-query: SELECT NOW() FROM dual
 
 ## mybatis

@@ -26,6 +26,34 @@
 					#{name}
 				</foreach>
     </select>
+	<select id="selectKingtagById" resultType="com.waity.api.dto.kingtagDTO">
+		SELECT
+				A.tag_ptr_id,B.tag_name,A.parent_tag_id
+		FROM
+				yt_kingtag A
+		INNER JOIN
+				yt_tag B
+		ON
+				A.tag_ptr_id = B.id
+		where
+				B.id = #{id}
+	</select>
+	<select id="selectKingTagByChannelId" resultType="com.waity.api.dto.kingtagDTO">
+		SELECT
+				A.tag_ptr_id,B.tag_name,A.parent_tag_id
+		FROM
+				yt_kingtag A
+		INNER JOIN
+				yt_tag B
+		ON
+				A.tag_ptr_id = B.id
+		INNER JOIN
+				yt_channel_tag C
+		ON
+				C.tag_id = B.id
+		where
+				C.channel_id = #{channelId}
+	</select>
 	<insert id="insertKingTag" parameterType="com.waity.api.dto.kingtagDTO">
 		INSERT INTO
 				yt_kingtag (tag_ptr_id, parent_tag_id)

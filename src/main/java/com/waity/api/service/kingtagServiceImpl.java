@@ -1,52 +1,75 @@
 package com.waity.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.waity.api.dto.tagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.waity.api.dto.kingtagDTO;
 import com.waity.api.mapper.kingtagMapper;
+import com.waity.api.mapper.tagMapper;
 
 import com.waity.api.service.tagService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class kingtagServiceImpl implements kingtagService{
+@Qualifier("kingtagService")
+public class kingtagServiceImpl implements tagService{
 	
 	@Autowired
 	private kingtagMapper kingtagMapper;
-
 	@Autowired
-	private tagService tagService;
-	
-	public List<kingtagDTO> selectKingtagAll() throws Exception {
-		return kingtagMapper.selectKingtagAll();
+	private tagMapper tagMapper;
+
+
+	public List<tagDTO> selectTagAll() throws Exception {
+		List<kingtagDTO> kingtags = kingtagMapper.selectKingtagAll();
+		List<tagDTO> tags = new ArrayList<>(kingtags);
+		return tags;
 	}
-	public List<kingtagDTO> selectKingtagByNames(String[] names) throws Exception {
-		return kingtagMapper.selectKingtagByNames(names);
+	public List<tagDTO> selectTagByNames(String[] names) throws Exception {
+		List<kingtagDTO> kingtags = kingtagMapper.selectKingtagByNames(names);
+		List<tagDTO> tags = new ArrayList<>(kingtags);
+		return tags;
+	}
+
+	@Override
+	public tagDTO selectTagById(int id) throws Exception {
+		return kingtagMapper.selectKingTagById(id);
+	}
+	@Override
+	public List<tagDTO> selectTagByIds(List<Integer> ids) throws Exception {
+		return null;
+	}
+
+	@Override
+	public List<tagDTO> selectTagByChannelId(int channelId) throws Exception {
+		List<tagDTO> tags = new ArrayList<>(kingtagMapper.selectKingTagByChannelId(channelId));
+		return tags;
 	}
 
 	@Transactional
-	public void insertKingTag(kingtagDTO kingtag) throws Exception {
+	public void insertTag(tagDTO kingtag) throws Exception {
 		tagDTO tag = new tagDTO();
 		tag.tagName = kingtag.tagName;
-		tagService.insertTag(tag);
+		tagMapper.insertTag(tag);
 
 		kingtag.id = tag.id;
-		kingtagMapper.insertKingTag(kingtag);
+		kingtagMapper.insertKingTag((kingtagDTO) kingtag);
 	}
 	@Transactional
-	public void updateKingTag(kingtagDTO kingtag) throws Exception {
+	public void updateTag(tagDTO kingtag) throws Exception {
 		tagDTO tag = new tagDTO();
 		tag.tagName = kingtag.tagName;
 		tag.id = kingtag.id;
-		tagService.updateTag(tag);
+		tagMapper.updateTag(tag);
 
-		kingtagMapper.updateKingTag(kingtag);
+		kingtagMapper.updateKingTag((kingtagDTO) kingtag);
 	}
-	public void deleteKingTag(kingtagDTO kingtag) throws Exception {
-		kingtagMapper.deleteKingTag(kingtag);
+	public void deleteTag(int id) throws Exception {
+		kingtagMapper.deleteKingTag(id);
 	}
 }

@@ -3,12 +3,14 @@ package com.waity.api.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.waity.api.dto.tagDTO;
 import com.waity.api.mapper.tagMapper;
 
 @Service
+@Primary
 public class tagServiceImpl implements tagService {
 
 	@Autowired

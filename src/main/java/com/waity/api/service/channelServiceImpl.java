@@ -26,14 +26,18 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Service
 @Slf4j
 public class channelServiceImpl implements channelService {
-	@Autowired
-	private channelMapper channelMapper;
-	@Autowired
-	private tagService tagService;
-	@Autowired
-	private videoService videoService;
 
+	private channelMapper channelMapper;
+	private tagService tagService;
+	private videoService videoService;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	public channelServiceImpl(channelMapper channelMapper,tagService tagService,videoService videoService){
+		this.channelMapper = channelMapper;
+		this.tagService = tagService;
+		this.videoService = videoService;
+	}
 	
 //	@Override
 //	public List<channelDTO> ChannelList(List<channelDTO> channelList) throws Exception {
