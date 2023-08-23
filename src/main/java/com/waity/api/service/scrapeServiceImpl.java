@@ -25,15 +25,17 @@ import java.util.regex.Pattern;
 @Service
 public class scrapeServiceImpl implements scrapeService{
 
-    @Autowired
-    youtubeDataApiService youtubeDataApiService;
-    @Autowired
-    channelService channelService;
-
     SseEmitter sseEmitter;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private youtubeDataApiService youtubeDataApiService;
+    private channelService channelService;
+
+    @Autowired
+    public scrapeServiceImpl(youtubeDataApiService youtubeDataApiService, channelService channelService) {
+        this.youtubeDataApiService = youtubeDataApiService;
+        this.channelService = channelService;
+    }
     public Object parse(String url) throws Exception {
         Document doc = null;
         try {

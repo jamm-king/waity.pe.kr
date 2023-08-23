@@ -26,33 +26,6 @@
 			#{id}
 		</foreach>
 	</select>
-    <select id="selectTagByNames" resultType="com.waity.api.dto.tagDTO">
-		select
-				*
-		from
-				yt_tag
-		WHERE
-				tag_name IN
-				<foreach item="name" index="index" collection="array" open="(" close=")" separator=",">
-					#{name}
-				</foreach>
-    </select>
-	<select id="selectTagByChannelId" resultType="com.waity.api.dto.tagDTO">
-		select
-				C.id, C.tag_name
-		from
-				yt_channel A
-		INNER JOIN
-				yt_channel_tag B
-		ON
-				A.id = B.channel_id
-		INNER JOIN
-				yt_tag C
-		ON
-				B.tag_id = C.id
-		WHERE
-				A.id = #{channelId}
-	</select>
 	<insert id="insertTag" parameterType="com.waity.api.dto.tagDTO" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 				yt_tag (tag_name)

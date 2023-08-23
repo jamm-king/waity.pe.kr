@@ -1,15 +1,5 @@
 package com.waity.api.service;
 
-import java.util.List;
+public interface kingtagService extends tagService {
 
-import com.waity.api.dto.kingtagDTO;
-
-public interface kingtagService {
-
-
-	List<kingtagDTO> selectKingtagAll() throws Exception;
-	List<kingtagDTO> selectKingtagByNames(String[] names) throws Exception;
-	void insertKingTag(kingtagDTO kingtag) throws Exception;
-	void updateKingTag(kingtagDTO kingtag) throws Exception;
-	void deleteKingTag(kingtagDTO kingtag) throws Exception;
 }

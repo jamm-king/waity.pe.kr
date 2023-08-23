@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waity.api.mapper.channelTagMapper">
+    <select id="selectChannelsByTag" resultType="com.waity.api.dto.channelDTO">
+        SELECT
+            A.id, A.channel_id, A.keyword, A.image, A.title, A.subscription_count, A.view_count, A.description
+        FROM
+            yt_channel A
+        INNER JOIN
+            yt_channel_tag B
+        ON
+            A.id = B.channel_id
+        INNER JOIN
+            yt_tag C
+        ON
+            C.id = B.tag_id
+        WHERE
+            C.id = #{id}
+        ORDER BY A.subscription_count DESC
+    </select>
+    <select id="selectChannelsByTagNames" resultType="com.waity.api.dto.channelDTO">
+        SELECT
+            A.id, A.channel_id, A.keyword, A.image, A.title, A.subscription_count, A.view_count, A.description
+        FROM
+            yt_channel A
+        INNER JOIN
+            yt_channel_tag B
+        ON
+            A.id = B.channel_id
+        INNER JOIN
+            yt_tag C
+        ON
+            C.id = B.tag_id
+        WHERE
+            C.tag_name IN
+            <foreach item="tag" index="index" collection="array" open="(" close=")" separator=",">
+                #{tag}
+            </foreach>
+        ORDER BY A.subscription_count DESC
+    </select>
+    <select id="selectTagByChannel" resultType="com.waity.api.dto.tagDTO">
+        select
+            C.id, C.tag_name
+        from
+            yt_channel A
+        INNER JOIN
+            yt_channel_tag B
+        ON
+            A.id = B.channel_id
+        INNER JOIN
+            yt_tag C
+        ON
+            B.tag_id = C.id
+        WHERE
+            A.id = #{channelId}
+    </select>
+    <insert id="insertChannelTags" parameterType="hashmap">
+        insert into
+            yt_channel_tag (channel_id, tag_id)
+        values
+        <foreach collection="tagIds" item="tagId" open="(" close=")" separator="),(">
+            #{channelId},
+            #{tagId}
+        </foreach>
+    </insert>
+    <delete id="deleteChannelTags" parameterType="hashmap">
+        delete from
+            yt_channel_tag
+        where
+            channel_id = #{channelId}
+        and
+            tag_id in
+            <foreach item="tagId" collection="tagIds" open="(" close=")" separator=",">
+                #{tagId}
+            </foreach>
+    </delete>
+    <!-->
+        여기서부터 channel-kingtag 쿼리
+    <!-->
+    <select id="selectChannelsByKingtag" resultType="com.waity.api.dto.channelDTO">
+        SELECT
+            A.id, A.channel_id, A.keyword, A.image, A.title, A.subscription_count, A.view_count, A.description
+        FROM
+            yt_channel A
+        INNER JOIN
+            yt_channel_tag B
+        ON
+            A.id = B.channel_id
+        INNER JOIN
+            yt_tag C
+        ON
+            C.id = B.tag_id
+        WHERE
+            C.id = #{id}
+        ORDER BY A.subscription_count DESC
+    </select>
+    <select id="selectKingtagByChannel" resultType="com.waity.api.dto.kingtagDTO">
+        select
+            C.id, C.tag_name, A.parent_tag_id
+        from
+            yt_kingtag A
+        INNER JOIN
+            yt_channel_tag B
+        ON
+            A.tag_ptr_id = B.tag_id
+        INNER JOIN
+            yt_tag C
+        ON
+            B.tag_id = C.id
+        WHERE
+            B.channel_id = #{channelId}
+    </select>
+    <insert id="insertChannelKingtags" parameterType="hashmap">
+        insert into
+            yt_channel_tag (channel_id, tag_id)
+        values
+        <foreach collection="tagIds" item="tagId" open="(" close=")" separator="),(">
+            #{channelId},
+            #{tagId}
+        </foreach>
+    </insert>
+    <delete id="deleteChannelKingtags" parameterType="hashmap">
+        delete from
+            yt_channel_tag
+        where
+            channel_id = #{channelId}
+        and
+            tag_id in
+            <foreach item="tagId" collection="tagIds" open="(" close=")" separator=",">
+                #{tagId}
+            </foreach>
+    </delete>
+</mapper>

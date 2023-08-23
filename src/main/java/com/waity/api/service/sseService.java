@@ -6,24 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 @Slf4j
 public class sseService {
-    private ConcurrentHashMap<String, SseEmitter> emitters = new ConcurrentHashMap<>();
-    @Autowired
-    youtubeDataApiService youtubeDataApiService;
-    @Autowired
-    scrapeService scrapeService;
-    @Autowired
-    channelService channelService;
 
+    private ConcurrentHashMap<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+
+    private youtubeDataApiService youtubeDataApiService;
+    private scrapeService scrapeService;
+    private channelService channelService;
+
+    @Autowired
+    public sseService(youtubeDataApiService youtubeDataApiService, scrapeService scrapeService, channelService channelService) {
+        this.youtubeDataApiService = youtubeDataApiService;
+        this.scrapeService = scrapeService;
+        this.channelService = channelService;
+    }
     public SseEmitter add(String key) throws Exception {
         SseEmitter emitter = new SseEmitter(1L * 60 * 1000);
         this.emitters.put(key, emitter);

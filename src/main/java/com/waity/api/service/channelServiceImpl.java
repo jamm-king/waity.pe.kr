@@ -28,43 +28,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class channelServiceImpl implements channelService {
 
 	private channelMapper channelMapper;
-	private tagService tagService;
-	private videoService videoService;
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	public channelServiceImpl(channelMapper channelMapper,tagService tagService,videoService videoService){
+	public channelServiceImpl(channelMapper channelMapper) {
 		this.channelMapper = channelMapper;
-		this.tagService = tagService;
-		this.videoService = videoService;
 	}
-	
-//	@Override
-//	public List<channelDTO> ChannelList(List<channelDTO> channelList) throws Exception {
-//		long startTime = System.currentTimeMillis();
-//		List<channelDTO> channelVideoList = new ArrayList<channelDTO>();
-//		int ids[] = new int[channelList.size()];
-//		for(int i = 0; i < channelList.size(); i++) {
-//			channelDTO channelObj = channelList.get(i);
-//			ids[i] = channelObj.id;
-//		}
-//		List<videoDTO> videoList = videoMapper.selectVideoByChannelIds(ids);
-//
-//		int idx = 0;
-//		for(int i=0;i<channelList.size();i++){
-//			channelDTO channel = channelList.get(i);
-//			int size = channel.videoCount;
-//			List<videoDTO> videos = videoList.subList(idx,Math.min(idx+size,videoList.size()));
-//			idx+=size;
-//			channel.videos = videos;
-//			channelVideoList.add(channel);
-//		}
-//
-//		long estimatedTime = System.currentTimeMillis() - startTime;
-//		System.out.println("estimatedTime : " + (estimatedTime) + "ms");
-//		return channelVideoList;
-//	}
-	
 	@Override
 	public List<channelDTO> selectChannelAll() throws Exception {
 		return channelMapper.selectChannelAll();
@@ -82,10 +50,6 @@ public class channelServiceImpl implements channelService {
 		return channelMapper.selectChannelByIds(ids);
 	}
 	@Override
-	public List<channelDTO> selectChannelByTags(String[] tags) throws Exception {
-		return channelMapper.selectChannelByTags(tags);
-	}
-	@Override
 	public void updateChannel(channelDTO channel) throws Exception {
 		channelMapper.updateChannel(channel);
 	}
@@ -98,42 +62,7 @@ public class channelServiceImpl implements channelService {
 		channelMapper.insertChannels(channels);
 	}
 	@Override
-	@Transactional
 	public void deleteChannel(int id) throws Exception {
-		System.out.println("Channel Service: deleteChannel");
-		videoService.deleteVideoByChannel(id);
 		channelMapper.deleteChannel(id);
-	}
-
-	@Override
-	public void insertChannelTags(int channelId, List<Integer> tagIds) throws Exception {
-		HashMap<String, Object> hm = new HashMap<>();
-		hm.put("channelId", channelId);
-		hm.put("tagIds", tagIds);
-		channelMapper.insertChannelTags(hm);
-	}
-	@Transactional
-	@Override
-	public void updateChannelTags(int channelId, List<Integer> tagIds) throws Exception {
-		List<tagDTO> originTags = tagService.selectTagByChannelId(channelId);
-		List<tagDTO> targetTags = tagService.selectTagByIds(tagIds);
-		List<Integer> originTagIds = new ArrayList<>();
-		List<Integer> targetTagIds = new ArrayList<>();
-
-		for(int i = 0; i < originTags.size(); i++) {
-			originTagIds.add(originTags.get(i).getId());
-		}
-		for(int i = 0; i < targetTags.size(); i++) {
-			targetTagIds.add(targetTags.get(i).getId());
-		}
-		deleteChannelTags(channelId, originTagIds);
-		insertChannelTags(channelId, targetTagIds);
-	}
-	@Override
-	public void deleteChannelTags(int channelId, List<Integer> tagIds) throws Exception {
-		HashMap<String, Object> hm = new HashMap<>();
-		hm.put("channelId", channelId);
-		hm.put("tagIds", tagIds);
-		channelMapper.deleteChannelTags(hm);
 	}
 }

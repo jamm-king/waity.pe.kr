@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.waity.api.service.sseService;
 
-import java.io.IOException;
-
 @RestController
 public class sseController {
 
-    @Autowired
-    sseService sseService;
+    private sseService sseService;
 
+    public sseController(sseService sseService) {
+        this.sseService = sseService;
+    }
     @GetMapping(value = "/api/sse/channel", params = "key", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(@RequestParam("key") String key) throws Exception {
         SseEmitter emitter = sseService.add(key);

@@ -23,25 +23,6 @@
 		WHERE
 				video_id = #{videoId}
     </select>
-    <select id="selectVideoByChannelIds" resultType="com.waity.api.dto.videoDTO">
-		SELECT
-				C.id, C.video_id, C.title, C.thumbnail
-		FROM
-				yt_channel A
-		INNER JOIN
-				yt_channel_video B
-		ON
-				A.id = B.channel_id
-		INNER JOIN
-				yt_video C
-		ON
-				C.id = B.video_id
-		WHERE
-				A.id IN
-				<foreach item="id" index="index" collection="array" open="(" close=")" separator=",">
-					#{id}
-				</foreach>
-    </select>
     <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO">
 		INSERT INTO yt_video (id, video_id, title, thumbnail)
 		VALUES(
@@ -76,17 +57,5 @@
 				yt_video
 		where
 				id = #{id}
-	</delete>
-	<delete id="deleteVideoByChannel" parameterType="int">
-		delete
-				A, B
-		from
-				yt_video A
-		inner join
-				yt_channel_video B
-		on
-				A.id = B.video_id
-		where
-				B.channel_id = #{channelId}
 	</delete>
 </mapper>

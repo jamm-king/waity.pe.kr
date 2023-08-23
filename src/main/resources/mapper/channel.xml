@@ -34,26 +34,6 @@
 					#{id}
 				</foreach>
     </select>
-    <select id="selectChannelByTags" resultType="com.waity.api.dto.channelDTO">
-		SELECT
-				A.id, A.channel_id, A.keyword, A.image, A.title, A.subscription_count, A.view_count, A.description
-		FROM
-				yt_channel A
-		INNER JOIN
-				yt_channel_tag B
-		ON
-				A.id = B.channel_id
-		INNER JOIN
-				yt_tag C
-		ON
-				C.id = B.tag_id
-		WHERE
-				C.tag_name IN
-				<foreach item="tag" index="index" collection="array" open="(" close=")" separator=",">
-					#{tag}
-				</foreach>
-		ORDER BY A.subscription_count DESC
-    </select>
 	<select id="selectChannelIdAll" resultType="String">
 		select
 				channel_id
@@ -140,25 +120,5 @@
 				yt_channel
 		where
 				id = #{id}
-	</delete>
-	<insert id="insertChannelTags" parameterType="hashmap">
-		insert into
-				yt_channel_tag (channel_id, tag_id)
-		values
-		<foreach collection="tagIds" item="tagId" open="(" close=")" separator="),(">
-				#{channelId},
-				#{tagId}
-		</foreach>
-	</insert>
-	<delete id="deleteChannelTags" parameterType="hashmap">
-		delete from
-				yt_channel_tag
-		where
-				channel_id = #{channelId}
-		and
-				tag_id in
-		<foreach item="tagId" collection="tagIds" open="(" close=")" separator=",">
-			#{tagId}
-		</foreach>
 	</delete>
 </mapper>
