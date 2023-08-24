@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import com.waity.api.dto.channelDTO;
+import com.waity.api.service.entityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import com.waity.api.service.channelTagService;
 @RestController
 public class tagController {
 
-	private tagService tagService;
+	private entityService<tagDTO> tagService;
 	private channelTagService channelTagService;
 
 	public tagController(tagService tagService, channelTagService channelTagService) {
@@ -23,13 +24,13 @@ public class tagController {
 	}
 	@GetMapping("/api/tag")
 	public List<tagDTO> selectTagAll() throws Exception {
-		List<tagDTO> tagList = tagService.selectTagAll();
+		List<tagDTO> tagList = tagService.selectEntityAll();
 		return tagList;
 	}
 	@GetMapping(path = "/api/tag/{id}")
 	public tagDTO selectTagById(@PathVariable("id") int id) throws Exception {
 		System.out.println("GET selectTagById");
-		return tagService.selectTagById(id);
+		return tagService.selectEntityById(id);
 	}
 	@GetMapping(value = "/api/tag", params = "channelId")
 	public List<tagDTO> selectTagByChannelId(@RequestParam("channelId") int channelId) throws Exception {
@@ -37,14 +38,14 @@ public class tagController {
 	}
 	@PostMapping("/api/tag")
 	public void insertTag(@RequestBody tagDTO tag) throws Exception {
-		tagService.insertTag(tag);
+		tagService.insertEntity(tag);
 	}
 	@PutMapping("/api/tag")
 	public void updateTag(@RequestBody tagDTO tag) throws Exception {
-		tagService.updateTag(tag);
+		tagService.updateEntity(tag);
 	}
 	@DeleteMapping("/api/tag/{id}")
 	public void deleteTag(@PathVariable int id) throws Exception {
-		tagService.deleteTag(id);
+		tagService.deleteEntity(id);
 	}
 }

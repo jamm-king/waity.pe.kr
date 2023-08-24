@@ -20,27 +20,39 @@ public class normaltagServiceImpl implements normaltagService {
         this.tagMapper = tagMapper;
     }
     @Override
-    public List<tagDTO> selectTagAll() throws Exception {
+    public List<tagDTO> selectEntityAll() throws Exception {
         return tagMapper.selectTagAll();
     }
     @Override
-    public tagDTO selectTagById(int id) throws Exception {
+    public tagDTO selectEntityById(int id) throws Exception {
         return tagMapper.selectTagById(id);
     }
     @Override
-    public List<tagDTO> selectTagsByIds(List<Integer> ids) throws Exception {
-        return tagMapper.selectTagByIds(ids);
+    public List<tagDTO> selectEntitiesByIds(List<Integer> ids) throws Exception {
+        return tagMapper.selectTagsByIds(ids);
     }
     @Override
-    public void insertTag(tagDTO tag) throws Exception {
+    public void insertEntity(tagDTO tag) throws Exception {
         tagMapper.insertTag(tag);
     }
     @Override
-    public void updateTag(tagDTO tag) throws Exception {
+    public void insertEntities(List<tagDTO> tags) throws Exception {
+        tagMapper.insertTags(tags);
+    }
+    @Override
+    public void updateEntity(tagDTO tag) throws Exception {
         tagMapper.updateTag(tag);
     }
     @Override
-    public void deleteTag(int id) throws Exception {
+    public void updateEntities(List<tagDTO> tags) throws Exception {
+        tagMapper.updateTags(tags);
+    }
+    @Override
+    public void deleteEntity(int id) throws Exception {
         tagMapper.deleteTag(id);
+    }
+    @Override
+    public void deleteEntities(List<Integer> ids) throws Exception {
+        tagMapper.deleteTags(ids);
     }
 }

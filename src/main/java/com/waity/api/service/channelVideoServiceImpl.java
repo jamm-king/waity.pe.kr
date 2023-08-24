@@ -1,5 +1,6 @@
 package com.waity.api.service;
 
+import com.waity.api.dto.channelDTO;
 import com.waity.api.dto.videoDTO;
 import com.waity.api.mapper.channelVideoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 @Service
 public class channelVideoServiceImpl implements  channelVideoService {
 
-    private channelService channelService;
+    private entityService<channelDTO> channelService;
     private channelVideoMapper channelVideoMapper;
 
     @Autowired
@@ -31,6 +32,6 @@ public class channelVideoServiceImpl implements  channelVideoService {
     @Transactional
     public void deleteVideoByChannel(int id) throws Exception {
         channelVideoMapper.deleteVideoByChannel(id);
-        channelService.deleteChannel(id);
+        channelService.deleteEntity(id);
     }
 }

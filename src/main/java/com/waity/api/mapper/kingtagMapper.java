@@ -10,7 +10,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface kingtagMapper {
 	List<kingtagDTO> selectKingtagAll() throws Exception;
 	kingtagDTO selectKingTagById(int id) throws Exception;
+	List<kingtagDTO> selectKingTagsByIds(List<Integer> ids) throws Exception;
 	void insertKingTag(kingtagDTO kingtag) throws Exception;
+	void insertKingTags(List<kingtagDTO> kingtag) throws Exception;
 	void updateKingTag(kingtagDTO kingtag) throws Exception;
+	void updateKingTags(List<kingtagDTO> kingtag) throws Exception;
 	void deleteKingTag(int id) throws Exception;
+	void deleteKingTags(List<Integer> ids) throws Exception;
 }

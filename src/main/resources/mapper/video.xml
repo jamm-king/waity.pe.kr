@@ -15,18 +15,20 @@
 		WHERE
 				id = #{id}
 	</select>
-	<select id="selectVideoByVideoId" resultType="com.waity.api.dto.videoDTO">
+	<select id="selectVideosByIds" resultType="com.waity.api.dto.videoDTO">
 		SELECT
 				*
 		FROM
 				yt_video
 		WHERE
-				video_id = #{videoId}
-    </select>
-    <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO">
-		INSERT INTO yt_video (id, video_id, title, thumbnail)
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+	</select>
+    <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO yt_video (video_id, title, thumbnail)
 		VALUES(
-				#{id},
 				#{videoId},
 				#{title},
 				#{thumbnail}
@@ -36,26 +38,54 @@
 				title = #{title},
 				thumbnail = #{thumbnail}
     </insert>
-    <select id="getLastId" resultType="int">
-		select
-				max(id)
-		from
-				yt_video
-    </select>
-	<update id="updateVideo" parameterType="com.waity.api.dto.videoDTO">
-		update
-				yt_video
-		set
+	<insert id="insertVideos" parameterType="com.waity.api.dto.videoDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO yt_video (video_id, title, thumbnail)
+		VALUES
+		<foreach collection="list" item="video" open="(" close=")" separator="),(">
+			#{video.videoId},
+			#{video.title},
+			#{video.thumbnail}
+		</foreach>
+		ON DUPLICATE KEY UPDATE
 				video_id = #{videoId},
 				title = #{title},
 				thumbnail = #{thumbnail}
+	</insert>
+	<update id="updateVideo" parameterType="com.waity.api.dto.videoDTO">
+		update
+			yt_video
+		set
+			video_id = #{video.videoId},
+			title = #{video.title},
+			thumbnail = #{video.thumbnail}
 		where
+			id = #{id}
+	</update>
+	<update id="updateVideos" parameterType="com.waity.api.dto.videoDTO">
+		<foreach collection="list" item="video">
+			update
+				yt_video
+			set
+				video_id = #{video.videoId},
+				title = #{video.title},
+				thumbnail = #{video.thumbnail}
+			where
 				id = #{id}
+		</foreach>
 	</update>
 	<delete id="deleteVideo" parameterType="int">
 		delete from
 				yt_video
 		where
 				id = #{id}
+	</delete>
+	<delete id="deleteVideos" parameterType="int">
+		delete from
+			yt_video
+		where
+			id IN
+			<foreach item="id" collection="list" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
 	</delete>
 </mapper>

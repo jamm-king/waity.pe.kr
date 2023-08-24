@@ -19,25 +19,43 @@ public class videoServiceImpl implements videoService {
 		this.videoMapper = videoMapper;
 	}
 	@Override
-	public List<videoDTO> selectVideoAll() throws Exception {
+	public List<videoDTO> selectEntityAll() throws Exception {
 		List<videoDTO> videoList = videoMapper.selectVideoAll();
 		return videoList;
 	}
 	@Override
-	public void updateVideo(videoDTO video) throws Exception {
-		videoMapper.updateVideo(video);
-	}
-	@Override
-	public videoDTO selectVideoById(int id) throws Exception {
+	public videoDTO selectEntityById(int id) throws Exception {
 		videoDTO video = videoMapper.selectVideoById(id);
 		return video;
 	}
 	@Override
-	public void insertVideo(videoDTO video) throws Exception {
+	public List<videoDTO> selectEntitiesByIds(List<Integer> ids) throws Exception {
+		List<videoDTO> videos = videoMapper.selectVideosByIds(ids);
+		return videos;
+	}
+	@Override
+	public void updateEntity(videoDTO video) throws Exception {
+		videoMapper.updateVideo(video);
+	}
+	@Override
+	public void updateEntities(List<videoDTO> videos) throws Exception {
+		videoMapper.updateVideos(videos);
+	}
+
+	@Override
+	public void insertEntity(videoDTO video) throws Exception {
 		videoMapper.insertVideo(video);
 	}
 	@Override
-	public void deleteVideo(int id) throws Exception {
+	public void insertEntities(List<videoDTO> videos) throws Exception {
+		videoMapper.insertVideos(videos);
+	}
+	@Override
+	public void deleteEntity(int id) throws Exception {
 		videoMapper.deleteVideo(id);
+	}
+	@Override
+	public void deleteEntities(List<Integer> ids) throws Exception {
+		videoMapper.deleteVideos(ids);
 	}
 }

@@ -18,12 +18,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.waity.api.service.channelService;
+import com.waity.api.service.entityService;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 public class channelController {
 
-	private channelService channelService;
+	private entityService<channelDTO> channelService;
 	private channelTagService channelTagService;
 
 	public channelController(channelService channelService, channelTagService channelTagService) {
@@ -32,15 +33,15 @@ public class channelController {
 	}
 	@GetMapping("/api/channel")
 	public List<channelDTO> selectChannelAll() throws Exception {
-		return channelService.selectChannelAll();
+		return channelService.selectEntityAll();
 	}
 	@GetMapping(path = "/api/channel/{id}")
 	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
-		return channelService.selectChannelById(id);
+		return channelService.selectEntityById(id);
 	}
 	@GetMapping(value = "/api/channel", params = "ids")
-	public List<channelDTO> selectChannelByIds(@RequestParam("ids") String[] ids) throws Exception {
-		return channelService.selectChannelByIds(ids);
+	public List<channelDTO> selectChannelByIds(@RequestParam("ids") List<Integer> ids) throws Exception {
+		return channelService.selectEntitiesByIds(ids);
 	}
 	@GetMapping(value = "/api/channel", params = "tagId")
 	public List<channelDTO> selectChannelByTags(@RequestParam("tagId") int tagId) throws Exception {
@@ -52,11 +53,19 @@ public class channelController {
 	}
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
-		channelService.updateChannel(channel);
+		channelService.updateEntity(channel);
+	}
+	@PutMapping(value = "/api/channel", params = "multiple")
+	public void updateChannels(@RequestBody List<channelDTO> channels) throws Exception {
+		channelService.updateEntities(channels);
 	}
 	@DeleteMapping("/api/channel/{id}")
 	public void deleteChannel(@PathVariable int id) throws Exception{
-		channelService.deleteChannel(id);
+		channelService.deleteEntity(id);
+	}
+	@DeleteMapping(value = "/api/channel" , params= "ids")
+	public void deleteChannels(@RequestParam List<Integer> ids) throws Exception{
+		channelService.deleteEntities(ids);
 	}
 	@PostMapping("/api/channel/tag")
 	public void insertChannelTags(@RequestBody HashMap<String, Object> hm) throws Exception {

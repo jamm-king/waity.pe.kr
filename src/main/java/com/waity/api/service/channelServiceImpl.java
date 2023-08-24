@@ -34,11 +34,11 @@ public class channelServiceImpl implements channelService {
 		this.channelMapper = channelMapper;
 	}
 	@Override
-	public List<channelDTO> selectChannelAll() throws Exception {
+	public List<channelDTO> selectEntityAll() throws Exception {
 		return channelMapper.selectChannelAll();
 	}
 	@Override
-	public channelDTO selectChannelById(int id) throws Exception {
+	public channelDTO selectEntityById(int id) throws Exception {
 		channelDTO channel = channelMapper.selectChannelById(id);
 		if(channel == null) {
 			throw new NotFoundException("entity not found.", ErrorCode.ENTITY_NOT_FOUND);
@@ -46,23 +46,31 @@ public class channelServiceImpl implements channelService {
 		return channel;
 	}
 	@Override
-	public List<channelDTO> selectChannelByIds(String[] ids) throws Exception {
-		return channelMapper.selectChannelByIds(ids);
+	public List<channelDTO> selectEntitiesByIds(List<Integer> ids) throws Exception {
+		return channelMapper.selectChannelsByIds(ids);
 	}
 	@Override
-	public void updateChannel(channelDTO channel) throws Exception {
+	public void updateEntity(channelDTO channel) throws Exception {
 		channelMapper.updateChannel(channel);
 	}
 	@Override
-	public void insertChannel(channelDTO channel) throws Exception {
+	public void updateEntities(List<channelDTO> channels) throws Exception {
+		channelMapper.updateChannels(channels);
+	}
+	@Override
+	public void insertEntity(channelDTO channel) throws Exception {
 		channelMapper.insertChannel(channel);
 	}
 	@Override
-	public void insertChannels(List<channelDTO> channels) throws Exception {
+	public void insertEntities(List<channelDTO> channels) throws Exception {
 		channelMapper.insertChannels(channels);
 	}
 	@Override
-	public void deleteChannel(int id) throws Exception {
+	public void deleteEntity(int id) throws Exception {
 		channelMapper.deleteChannel(id);
+	}
+	@Override
+	public void deleteEntities(List<Integer> ids) throws Exception {
+		channelMapper.deleteChannels(ids);
 	}
 }

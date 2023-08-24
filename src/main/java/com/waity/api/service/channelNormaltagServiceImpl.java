@@ -15,7 +15,7 @@ import java.util.List;
 @Primary
 public class channelNormaltagServiceImpl implements channelNormaltagService {
 
-    private normaltagService normaltagService;
+    private entityService<tagDTO> normaltagService;
     private channelTagMapper channelTagMapper;
 
     @Autowired
@@ -45,7 +45,7 @@ public class channelNormaltagServiceImpl implements channelNormaltagService {
     @Override
     public void updateChannelTags(int channelId, List<Integer> tagIds) throws Exception {
         List<tagDTO> originTags = selectTagByChannelId(channelId);
-        List<tagDTO> targetTags = normaltagService.selectTagsByIds(tagIds);
+        List<tagDTO> targetTags = normaltagService.selectEntitiesByIds(tagIds);
         List<Integer> originTagIds = new ArrayList<>();
         List<Integer> targetTagIds = new ArrayList<>();
 

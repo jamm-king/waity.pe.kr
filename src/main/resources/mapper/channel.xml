@@ -15,37 +15,17 @@
 		WHERE
 				id = #{id}
 	</select>
-    <select id="selectChannelByChannelId" resultType="com.waity.api.dto.channelDTO">
-		SELECT
-				*
-		FROM
-				yt_channel
-		WHERE
-				channel_id = #{channelId}
-    </select>
-    <select id="selectChannelByIds" resultType="com.waity.api.dto.channelDTO">
+    <select id="selectChannelsByIds" resultType="com.waity.api.dto.channelDTO">
 		select
 				*
 		from
 				yt_channel
 		WHERE
 				id IN
-				<foreach item="id" index="index" collection="array" open="(" close=")" separator=",">
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
 					#{id}
 				</foreach>
     </select>
-	<select id="selectChannelIdAll" resultType="String">
-		select
-				channel_id
-		from
-				yt_channel
-	</select>
-	<select id="getLastId" resultType="int">
-		select
-				max(id)
-		from
-				yt_channel
-	</select>
     <insert id="insertChannel" parameterType="com.waity.api.dto.channelDTO" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 			yt_channel (
@@ -76,7 +56,7 @@
 				view_count = #{viewCount},
 				description = #{description}
     </insert>
-	<insert id="insertChannels" parameterType="com.waity.api.dto.channelDTO">
+	<insert id="insertChannels" parameterType="com.waity.api.dto.channelDTO" useGeneratedKeys="true" keyProperty="id">
 		insert into
 				yt_channel (channel_id, keyword, image, title, subscription_count, view_count, description, video_count)
 		values
@@ -115,10 +95,36 @@
 		where
 				id = #{id}
 	</update>
+	<update id="updateChannels" parameterType="com.waity.api.dto.channelDTO">
+		<foreach collection="list" item="channel">
+			update
+				yt_channel
+			set
+				channel_id = #{channel.channel_id},
+				keyword = #{channel.keyword},
+				image = #{channel.image},
+				title = #{channel.title},
+				subscription_count = #{channel.subscriptionCount},
+				view_count = #{channel.viewCount},
+				description = #{channel.description},
+				video_count = #{channel.videoCount}
+			where
+				id = #{id}
+		</foreach>
+	</update>
 	<delete id="deleteChannel" parameterType="int">
 		delete from
 				yt_channel
 		where
 				id = #{id}
+	</delete>
+	<delete id="deleteChannels" parameterType="int">
+		delete from
+			yt_channel
+		where
+			id = IN
+			<foreach item="id" collection="list" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
 	</delete>
 </mapper>

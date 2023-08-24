@@ -15,7 +15,7 @@
 		WHERE
 				id = #{id}
 	</select>
-	<select id="selectTagByIds" resultType="com.waity.api.dto.tagDTO">
+	<select id="selectTagsByIds" resultType="com.waity.api.dto.tagDTO">
 		select
 				*
 		from
@@ -35,6 +35,16 @@
 		ON DUPLICATE KEY UPDATE
 				tag_name = #{tagName}
 	</insert>
+	<insert id="insertTags" parameterType="com.waity.api.dto.tagDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			yt_tag (tag_name)
+		VALUES
+		<foreach collection="list" item="tag" open="(" close=")" separator="),(">
+			#{tag.tagName}
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+			tag_name = #{tagName}
+	</insert>
 	<update id="updateTag" parameterType="com.waity.api.dto.tagDTO">
 		update
 				yt_tag
@@ -43,10 +53,29 @@
 		where
 				id = #{id}
 	</update>
+	<update id="updateTags" parameterType="com.waity.api.dto.tagDTO">
+		<foreach collection="list" item="tag">
+			update
+				yt_tag
+			set
+				tag_name = #{tag.tagName}
+			where
+				id = #{tag.id}
+		</foreach>
+	</update>
 	<delete id="deleteTag" parameterType="int">
 		delete from
 				yt_tag
 		where
 				id = #{id}
+	</delete>
+	<delete id="deleteTags" parameterType="int">
+		delete from
+			yt_tag
+		where
+			id IN
+			<foreach item="id" collection="list" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
 	</delete>
 </mapper>

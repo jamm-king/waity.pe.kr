@@ -2,6 +2,7 @@ package com.waity.api.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.waity.api.dto.tagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,33 +27,64 @@ public class kingtagServiceImpl implements kingtagService {
 		this.tagMapper = tagMapper;
 		this.kingtagMapper = kingtagMapper;
 	}
-	public List<tagDTO> selectTagAll() throws Exception {
-		List<kingtagDTO> kingtags = kingtagMapper.selectKingtagAll();
-		List<tagDTO> tags = new ArrayList<>(kingtags);
+
+	public List<tagDTO> transformList(List<kingtagDTO> kingtags) throws Exception {
+		List<tagDTO> tags = new ArrayList<tagDTO>();
+		IntStream.range(0,kingtags.size()).forEach(i -> {
+			tagDTO tag = new tagDTO();
+			tag.tagName = kingtags.get(i).tagName;
+			tags.add(tag);
+		});
 		return tags;
 	}
+	public List<kingtagDTO> selectEntityAll() throws Exception {
+		List<kingtagDTO> kingtags = kingtagMapper.selectKingtagAll();
+		return kingtags;
+	}
 	@Override
-	public tagDTO selectTagById(int id) throws Exception {
+	public kingtagDTO selectEntityById(int id) throws Exception {
 		return kingtagMapper.selectKingTagById(id);
 	}
+	@Override
+	public List<kingtagDTO> selectEntitiesByIds(List<Integer> ids) throws Exception {
+		return kingtagMapper.selectKingTagsByIds(ids);
+	}
 	@Transactional
-	public void insertTag(tagDTO kingtag) throws Exception {
-		tagDTO tag = new tagDTO();
-		tag.tagName = kingtag.tagName;
-		tagMapper.insertTag(tag);
+	@Override
+	public void insertEntity(kingtagDTO kingtag) throws Exception {
+		tagMapper.insertTag(kingtag);
+		kingtagMapper.insertKingTag(kingtag);
+	}
+	@Transactional
+	@Override
+	public void insertEntities(List<kingtagDTO> kingtags) throws Exception {
+		List<tagDTO> tags = transformList(kingtags);
+		tagMapper.insertTags(tags);
 
-		kingtag.id = tag.id;
-		kingtagMapper.insertKingTag((kingtagDTO) kingtag);
+		IntStream.range(0,kingtags.size()).forEach(i -> {
+			kingtags.get(i).id = tags.get(i).id;
+		});
+		kingtagMapper.insertKingTags(kingtags);
 	}
 	@Transactional
-	public void updateTag(tagDTO kingtag) throws Exception {
-		tagDTO tag = new tagDTO();
-		tag.tagName = kingtag.tagName;
-		tag.id = kingtag.id;
-		tagMapper.updateTag(tag);
-		kingtagMapper.updateKingTag((kingtagDTO) kingtag);
+	@Override
+	public void updateEntity(kingtagDTO kingtag) throws Exception {
+		tagMapper.updateTag(kingtag);
+		kingtagMapper.updateKingTag(kingtag);
 	}
-	public void deleteTag(int id) throws Exception {
+	@Transactional
+	@Override
+	public void updateEntities(List<kingtagDTO> kingtags) throws Exception {
+		List<tagDTO> tags = transformList(kingtags);
+		tagMapper.updateTags(tags);
+		kingtagMapper.updateKingTags(kingtags);
+	}
+	@Override
+	public void deleteEntity(int id) throws Exception {
 		kingtagMapper.deleteKingTag(id);
+	}
+	@Override
+	public void deleteEntities(List<Integer> ids) throws Exception {
+		kingtagMapper.deleteKingTags(ids);
 	}
 }

@@ -23,7 +23,22 @@
 		where
 				B.id = #{id}
 	</select>
-	<insert id="insertKingTag" parameterType="com.waity.api.dto.kingtagDTO">
+	<select id="selectKingtagsByIds" resultType="com.waity.api.dto.kingtagDTO">
+		SELECT
+			A.tag_ptr_id,B.tag_name,A.parent_tag_id
+		FROM
+			yt_kingtag A
+		INNER JOIN
+			yt_tag B
+		ON
+			A.tag_ptr_id = B.id
+		where
+			B.id IN
+			<foreach item="id" collection="list" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+	</select>
+	<insert id="insertKingTag" parameterType="com.waity.api.dto.kingtagDTO" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 				yt_kingtag (tag_ptr_id, parent_tag_id)
 		VALUES(
@@ -33,6 +48,18 @@
 		ON DUPLICATE KEY UPDATE
 				tag_ptr_id = #{id}, parent_tag_id = #{parentTagId}
 	</insert>
+	<insert id="insertKingTags" parameterType="com.waity.api.dto.kingtagDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			yt_kingtag (tag_ptr_id, parent_tag_id)
+		VALUES
+		<foreach collection="list" item="kingtag" open="(" close=")" separator="),(">
+			#{kingtag.id},
+			#{kingtag.parentTagId},
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+				tag_ptr_id = values(tag_ptr_id),
+				parent_tag_id = values(parent_tag_id)
+	</insert>
 	<update id="updateKingTag" parameterType="com.waity.api.dto.kingtagDTO">
 		update
 				yt_kingtag
@@ -41,10 +68,29 @@
 		where
 				tag_ptr_id = #{id}
 	</update>
+	<update id="updateKingTags" parameterType="com.waity.api.dto.kingtagDTO">
+		<foreach collection="list" item="kingtag">
+			update
+				yt_kingtag
+			set
+				parent_tag_id = #{kingtag.parentTagId}
+			where
+				tag_ptr_id = #{kingtag.id}
+		</foreach>
+	</update>
 	<delete id="deleteKingTag" parameterType="com.waity.api.dto.kingtagDTO">
 		delete from
 				yt_kingtag
 		where
 				tag_ptr_id = #{id}
+	</delete>
+	<delete id="deleteKingTags" parameterType="com.waity.api.dto.kingtagDTO">
+		delete from
+			yt_kingtag
+		where
+			tag_ptr_id IN
+			<foreach item="id" collection="list" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
 	</delete>
 </mapper>

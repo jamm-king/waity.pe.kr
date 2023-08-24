@@ -19,7 +19,7 @@ public class sseService {
 
     private youtubeDataApiService youtubeDataApiService;
     private scrapeService scrapeService;
-    private channelService channelService;
+    private entityService<channelDTO> channelService;
 
     @Autowired
     public sseService(youtubeDataApiService youtubeDataApiService, scrapeService scrapeService, channelService channelService) {
@@ -56,7 +56,7 @@ public class sseService {
             try {
                 channelDTO channel = scrapeService.scrapeChannel(channelId);
                 try {
-                    channelService.insertChannel(channel);
+                    channelService.insertEntity(channel);
                     success.add(channel);
                 } catch (Exception e) {
                     fail.add(channel);
