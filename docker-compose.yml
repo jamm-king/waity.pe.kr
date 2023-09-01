@@ -17,10 +17,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8081:8080
+    volumes:
+      - ./logs:/logs
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:log4jdbc:mysql://db:3306/yt?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:log4jdbc:mysql://db:3306/yt?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&allowMultiQueries=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=Woals0313!
+      - YOUTUBE_DATA_API_KEY=AIzaSyBzXpb-djwWT18JGwQCWLS3Fg4B_ZVLFfQ
+      - YOUTUBE_DATA_API_ENDPOINT=https://www.googleapis.com/youtube/v3
     depends_on:
       - db
     restart: always

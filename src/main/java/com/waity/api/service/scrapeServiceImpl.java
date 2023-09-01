@@ -3,17 +3,19 @@ package com.waity.api.service;
 import java.util.*;
 
 import com.jayway.jsonpath.JsonPath;
-import com.waity.api.dto.channelDTO;
+import com.waity.api.domain.Channel;
+import com.waity.api.service.db.channelService;
 import net.minidev.json.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -23,8 +25,17 @@ import java.util.regex.Pattern;
 @Service
 public class scrapeServiceImpl implements scrapeService{
 
+    SseEmitter sseEmitter;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private youtubeDataApiService youtubeDataApiService;
+    private com.waity.api.service.db.channelService channelService;
+
+    @Autowired
+    public scrapeServiceImpl(youtubeDataApiService youtubeDataApiService, channelService channelService) {
+        this.youtubeDataApiService = youtubeDataApiService;
+        this.channelService = channelService;
+    }
     public Object parse(String url) throws Exception {
         Document doc = null;
         try {
@@ -50,7 +61,7 @@ public class scrapeServiceImpl implements scrapeService{
 
         return obj;
     }
-    public channelDTO scrapeChannel(String channelId) throws Exception {
+    public Channel scrapeChannel(String channelId) throws Exception {
         String url = "https://www.youtube.com/channel/" + channelId;
         Object obj = parse(url);
 
@@ -113,11 +124,7 @@ public class scrapeServiceImpl implements scrapeService{
 
         //description
         String description = "";
-        try {
-            description = ((JSONArray) JsonPath.read(obj.toString(), "$..description.simpleText")).get(0).toString();
-        } catch(Exception e) {
-            logger.warn(title + ": description이 없는 채널");
-        }
+        description = ((JSONArray) JsonPath.read(obj.toString(), "$..description.simpleText")).get(0).toString();
 
         //조회수
         //조회수도 파싱해서 넣어야함
@@ -151,14 +158,14 @@ public class scrapeServiceImpl implements scrapeService{
             viewCount = Long.parseLong(temp);
         }
 
-        channelDTO channel = new channelDTO();
-        channel.channelId = channelId;
-        channel.title = title;
-        channel.image = image;
-        channel.keyword = keywords;
-        channel.description = description;
-        channel.viewCount = viewCount;
-        channel.subscriptionCount = subscriptionCount;
+        Channel channel = new Channel();
+        channel.setChannelId(channelId);
+        channel.setTitle(title);
+        channel.setImage(image);
+        channel.setKeyword(keywords);
+        channel.setDescription(description);
+        channel.setViewCount(viewCount);
+        channel.setSubscriptionCount(subscriptionCount);
 
         logger.info("###############\nscraped data for " + title + "###############");
 

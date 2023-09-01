@@ -15,61 +15,67 @@
 		WHERE
 				id = #{id}
 	</select>
-	<select id="selectVideoByVideoId" resultType="com.waity.api.dto.videoDTO">
+	<select id="selectVideosByIds" resultType="com.waity.api.dto.videoDTO">
 		SELECT
 				*
 		FROM
 				yt_video
 		WHERE
-				video_id = #{videoId}
-    </select>
-    <select id="selectVideoByChannelIds" resultType="com.waity.api.dto.videoDTO">
-		SELECT
-				C.id, C.video_id, C.title, C.thumbnail
-		FROM
-				yt_channel A
-		INNER JOIN
-				yt_channel_video B
-		ON
-				A.id = B.channel_id
-		INNER JOIN
-				yt_video C
-		ON
-				C.id = B.video_id
-		WHERE
-				A.id IN
-				<foreach item="id" index="index" collection="array" open="(" close=")" separator=",">
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
 					#{id}
 				</foreach>
-    </select>
-    <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO">
-		INSERT INTO yt_video (id, video_id, title, thumbnail)
+	</select>
+    <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO yt_video (video_id, title, thumbnail, channel_id)
 		VALUES(
-				#{id},
 				#{videoId},
 				#{title},
 				#{thumbnail}
+				#{channelId}
 			  )
 		ON DUPLICATE KEY UPDATE
 				video_id = #{videoId},
 				title = #{title},
 				thumbnail = #{thumbnail}
+				channel_id = #{channelId}
     </insert>
-    <select id="getLastId" resultType="int">
-		select
-				max(id)
-		from
-				yt_video
-    </select>
+	<insert id="insertVideos" parameterType="com.waity.api.dto.videoDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO yt_video (video_id, title, thumbnail)
+		VALUES
+		<foreach collection="list" item="video" open="(" close=")" separator="),(">
+			#{video.videoId},
+			#{video.title},
+			#{video.thumbnail}
+			#{video.channelId}
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+			video_id = values(video_id),
+			title = values(title),
+			thumbnail = values(thumbnail),
+			channel_id = values(channel_id)
+	</insert>
 	<update id="updateVideo" parameterType="com.waity.api.dto.videoDTO">
 		update
-				yt_video
+			yt_video
 		set
-				video_id = #{videoId},
-				title = #{title},
-				thumbnail = #{thumbnail}
+			video_id = #{video.videoId},
+			title = #{video.title},
+			thumbnail = #{video.thumbnail}
 		where
+			id = #{id}
+	</update>
+	<update id="updateVideos" parameterType="com.waity.api.dto.videoDTO">
+		<foreach collection="list" item="video">
+			update
+				yt_video
+			set
+				video_id = #{video.videoId},
+				title = #{video.title},
+				thumbnail = #{video.thumbnail}
+			where
 				id = #{id}
+		</foreach>
 	</update>
 	<delete id="deleteVideo" parameterType="int">
 		delete from
@@ -77,16 +83,13 @@
 		where
 				id = #{id}
 	</delete>
-	<delete id="deleteVideoByChannel" parameterType="int">
-		delete
-				A, B
-		from
-				yt_video A
-		inner join
-				yt_channel_video B
-		on
-				A.id = B.video_id
+	<delete id="deleteVideos" parameterType="int">
+		delete from
+			yt_video
 		where
-				B.channel_id = #{channelId}
+			id IN
+			<foreach item="id" collection="list" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
 	</delete>
 </mapper>

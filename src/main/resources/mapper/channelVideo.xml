@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waity.api.mapper.channelVideoMapper">
+    <select id="selectChannelByVideo" resultType="com.waity.api.dto.videoDTO">
+        SELECT
+            A.id, A.channel_id, A.keyword, A.title, A.image, A.description, A.subscription_count, A.view_count, A.video_count
+        FROM
+            yt_channel A
+        INNER JOIN
+            yt_video B
+        ON
+            A.id = B.channel_id
+        WHERE
+            B.id = #{videoId}
+    </select>
+    <select id="selectVideosByChannel" resultType="com.waity.api.dto.videoDTO">
+        SELECT
+            B.id, B.video_id, B.title, B.thumbnail
+        FROM
+            yt_channel A
+        INNER JOIN
+            yt_video B
+        ON
+            A.id = B.channel_id
+        WHERE
+            A.id = #{channelId}
+    </select>
+</mapper>

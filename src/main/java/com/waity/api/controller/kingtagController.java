@@ -1,43 +1,36 @@
 package com.waity.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.waity.api.service.entity.kingtagEntityService;
 import org.springframework.web.bind.annotation.*;
 
 import com.waity.api.dto.kingtagDTO;
-import com.waity.api.service.kingtagService;
 
 @CrossOrigin
 @RestController
 public class kingtagController {
-	@Autowired
-	private kingtagService kingtagService;
-	
-	@GetMapping("/api/kingtag")
-	public List<kingtagDTO> selectKingtagAll() throws Exception {
-		List<kingtagDTO> kingtagList = kingtagService.selectKingtagAll();
-		return kingtagList;
+
+	private kingtagEntityService kingtagEntityService;
+
+	public kingtagController(kingtagEntityService kingtagEntityService){
+		this.kingtagEntityService = kingtagEntityService;
 	}
-	@GetMapping(value = "/api/kingtag", params = "names")
-	public List<kingtagDTO> selectKingtagByNames(@RequestParam("names") String[] names) throws Exception {
-		List<kingtagDTO> kingtagList = kingtagService.selectKingtagByNames(names);
-		return kingtagList;
+	@GetMapping("/api/kingtag")
+	public List<kingtagDTO> getAllKingtags() throws Exception {
+		return kingtagEntityService.getAllKingtags();
 	}
 	@PostMapping("/api/kingtag")
-	public void insertKingTag(@RequestBody kingtagDTO kingtag) throws Exception {
-		kingtagService.insertKingTag(kingtag);
+	public void createKingtag(@RequestBody kingtagDTO kingtag) throws Exception {
+		kingtagEntityService.createKingtag(kingtag);
 	}
-
 	@PutMapping("/api/kingtag")
-	public void updateKingTag(@RequestBody kingtagDTO kingtag) throws Exception {
-		kingtagService.updateKingTag(kingtag);
+	public void updateKingtag(@RequestBody kingtagDTO kingtag) throws Exception {
+		kingtagEntityService.updateKingtag(kingtag);
 	}
-
-	@DeleteMapping("/api/kingtag")
-	public void deleteKingTag(@RequestBody kingtagDTO kingtag) throws Exception {
-		kingtagService.deleteKingTag(kingtag);
+	@DeleteMapping("/api/kingtag/{id}")
+	public void deleteKingtag(@PathVariable int id) throws Exception {
+		kingtagEntityService.deleteKingtag(id);
 	}
-
 }
