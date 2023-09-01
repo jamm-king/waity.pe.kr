@@ -1,11 +1,16 @@
 package com.waity.api.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class videoDTO {
 	public int id;
 	public String videoId;
 	public String title;
 	public String thumbnail;
+	public int channelId;
 }

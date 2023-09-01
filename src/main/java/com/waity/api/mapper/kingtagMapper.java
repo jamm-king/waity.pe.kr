@@ -1,5 +1,6 @@
 package com.waity.api.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.waity.api.dto.kingtagDTO;
@@ -17,4 +18,12 @@ public interface kingtagMapper {
 	void updateKingTags(List<kingtagDTO> kingtag) throws Exception;
 	void deleteKingTag(int id) throws Exception;
 	void deleteKingTags(List<Integer> ids) throws Exception;
+
+	void insertTagParentTag(HashMap<Integer, Integer> hm) throws Exception;
+	void updateTagParentTag(HashMap<Integer, Integer> hm) throws Exception;
+	void deleteTagParentTag(HashMap<Integer, Integer> hm) throws Exception;
+
+	tagDTO selectTagByKingtag(int kingtagId);
+	kingtagDTO selectKingtagByTag(int tagId);
+	kingtagDTO selectParentTag(int id);
 }

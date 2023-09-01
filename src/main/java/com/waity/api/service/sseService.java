@@ -1,6 +1,9 @@
 package com.waity.api.service;
 
+import com.waity.api.domain.Channel;
 import com.waity.api.dto.channelDTO;
+import com.waity.api.service.db.dbService;
+import com.waity.api.service.db.channelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ public class sseService {
 
     private youtubeDataApiService youtubeDataApiService;
     private scrapeService scrapeService;
-    private entityService<channelDTO> channelService;
+    private dbService<Channel> channelService;
 
     @Autowired
     public sseService(youtubeDataApiService youtubeDataApiService, scrapeService scrapeService, channelService channelService) {
@@ -54,12 +57,12 @@ public class sseService {
         for(int i = 0; i < channelIds.size(); i++) {
             String channelId = channelIds.get(i);
             try {
-                channelDTO channel = scrapeService.scrapeChannel(channelId);
+                Channel channel = scrapeService.scrapeChannel(channelId);
                 try {
                     channelService.insertEntity(channel);
-                    success.add(channel);
+                    success.add(Channel.toChannelDTO(channel));
                 } catch (Exception e) {
-                    fail.add(channel);
+                    fail.add(Channel.toChannelDTO(channel));
                     throw e;
                 } finally {
                     emitter.send(SseEmitter.event()

@@ -1,10 +1,20 @@
 package com.waity.api.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.waity.api.domain.KingTag;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@Getter
 public class kingtagDTO extends tagDTO{
     public int parentTagId;
+
+    public kingtagDTO(int id, String tagName, int parentTagId) {
+        super(id, tagName);
+        this.parentTagId = parentTagId;
+    }
+    public kingtagDTO(tagDTO tagDTO, int parentTagId) {
+        super(tagDTO.getId(), tagDTO.getTagName());
+        this.parentTagId = parentTagId;
+    }
 }

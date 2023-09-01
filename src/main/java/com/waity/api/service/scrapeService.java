@@ -1,13 +1,8 @@
 package com.waity.api.service;
 
-import com.waity.api.dto.channelDTO;
-import org.json.simple.JSONObject;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.util.HashMap;
-import java.util.List;
+import com.waity.api.domain.Channel;
 
 
 public interface scrapeService {
-    channelDTO scrapeChannel(String channelId) throws Exception;
+    Channel scrapeChannel(String channelId) throws Exception;
 }

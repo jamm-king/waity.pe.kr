@@ -93,4 +93,62 @@
 				#{id}
 			</foreach>
 	</delete>
+
+	<insert id="insertTagParentTag" parameterType="hashmap">
+		INSERT INTO
+			yt_kingtag (tag_ptr_id, parent_tag_id)
+		VALUES (
+			#{kintagId},
+			#{parentTagId}
+		)
+	</insert>
+	<update id="updateTagParentTag" parameterType="hashmap">
+		UPDATE
+			yt_kingtag
+		SET
+			parent_tag_id = #{parentTagId}
+		WHERE
+			tag_ptr_id = #{kingtagId}
+	</update>
+	<delete id="deleteTagParentTag" parameterType="hashmap">
+		DELETE FROM
+			yt_kingtag
+		WHERE
+			tag_ptr_id = #{kingtagId}
+	</delete>
+
+	<select id="selectTagByKingtag" resultType="com.waity.api.dto.tagDTO">
+		SELECT
+			A.id, A.tag_name
+		FROM
+			yt_tag A, yt_kingtag B
+		WHERE
+			A.id = B.tag_ptr_id
+		AND
+			B.tag_ptr_id = #{kingtagId}
+	</select>
+	<select id="selectKingtagByTag" resultType="com.waity.api.dto.kingtagDTO">
+		SELECT
+			B.tag_ptr_id, B.parent_tag_id
+		FROM
+			yt_tag A, yt_kingtag B
+		WHERE
+			A.id = B.tag_ptr_id
+		AND
+			A.id = #{tagId}
+	</select>
+	<select id="selectParentTag" resultType="com.waity.api.dto.kingtagDTO">
+		SELECT
+			A.id, A.tag_name, B.parent_tag_id
+		FROM
+			yt_tag A,
+			yt_kingtag B,
+			yt_kingtag C
+		WHERE
+			C.tag_ptr_id = #{id}
+		AND
+			B.tag_ptr_id = C.parent_tag_id
+		AND
+			A.id = B.tag_ptr_id
+	</select>
 </mapper>

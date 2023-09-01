@@ -1,8 +1,8 @@
-package com.waity.api.service;
+package com.waity.api.service.db;
 
 import java.util.List;
 
-public interface entityService<T> {
+public interface dbService<T> {
     T selectEntityById(int id) throws Exception;
     List<T> selectEntitiesByIds(List<Integer> ids) throws Exception;
     List<T> selectEntityAll() throws Exception;

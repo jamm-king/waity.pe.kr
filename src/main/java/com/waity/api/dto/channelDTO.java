@@ -1,10 +1,10 @@
 package com.waity.api.dto;
 
-import lombok.Data;
+import lombok.*;
 
-import java.util.List;
-
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class channelDTO {
 	public int id;
 	public String channelId;

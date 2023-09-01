@@ -1,9 +1,6 @@
 package com.waity.api.mapper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 
 import com.waity.api.dto.channelDTO;
 import org.apache.ibatis.annotations.Mapper;

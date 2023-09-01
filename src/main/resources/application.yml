@@ -18,21 +18,31 @@ mybatis:
 logging:
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+    rolling-file-name: "/logs/waity.%d{yyyy-MM-dd}.%i"
+  file:
+    name: /logs/waity.log
+    max-history: 30
   level:
+    com:
+      waity: info
+      zaxxer: off
     org:
-      springframework: INFO
+      springframework: info
+      apache: off
     jdbc:
-      sqlonly: off
-      sqltiming: info
-      resultsettable: info
       audit: off
       resultset: off
-      connection: off
+      resultsettable: off  #SQL 결과 데이터 Table을 로그로 남긴다.
+      sqlonly: off     #SQL만 로그로 남긴다.
+      sqltiming: info    #SQL과 소요시간을 표기한다.
+      connection: off  # 커넥션 확인가능
+
 
 ## youtube
 youtube:
-  key: AIzaSyBzXpb-djwWT18JGwQCWLS3Fg4B_ZVLFfQ
-  endpoint: https://www.googleapis.com/youtube/v3
+  key: ${YOUTUBE_DATA_API_KEY}
+  endpoint: ${YOUTUBE_DATA_API_ENDPOINT}
 
 ---
 

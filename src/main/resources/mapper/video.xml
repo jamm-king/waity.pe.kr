@@ -27,16 +27,18 @@
 				</foreach>
 	</select>
     <insert id="insertVideo" parameterType="com.waity.api.dto.videoDTO" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO yt_video (video_id, title, thumbnail)
+		INSERT INTO yt_video (video_id, title, thumbnail, channel_id)
 		VALUES(
 				#{videoId},
 				#{title},
 				#{thumbnail}
+				#{channelId}
 			  )
 		ON DUPLICATE KEY UPDATE
 				video_id = #{videoId},
 				title = #{title},
 				thumbnail = #{thumbnail}
+				channel_id = #{channelId}
     </insert>
 	<insert id="insertVideos" parameterType="com.waity.api.dto.videoDTO" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO yt_video (video_id, title, thumbnail)
@@ -45,11 +47,13 @@
 			#{video.videoId},
 			#{video.title},
 			#{video.thumbnail}
+			#{video.channelId}
 		</foreach>
 		ON DUPLICATE KEY UPDATE
-				video_id = #{videoId},
-				title = #{title},
-				thumbnail = #{thumbnail}
+			video_id = values(video_id),
+			title = values(title),
+			thumbnail = values(thumbnail),
+			channel_id = values(channel_id)
 	</insert>
 	<update id="updateVideo" parameterType="com.waity.api.dto.videoDTO">
 		update

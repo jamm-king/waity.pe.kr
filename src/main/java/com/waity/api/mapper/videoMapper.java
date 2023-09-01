@@ -2,11 +2,9 @@ package com.waity.api.mapper;
 
 import java.util.List;
 
-import com.waity.api.dto.channelDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.waity.api.dto.videoDTO;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Mapper
 public interface videoMapper {

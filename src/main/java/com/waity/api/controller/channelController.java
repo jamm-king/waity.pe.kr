@@ -1,88 +1,75 @@
 package com.waity.api.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 import com.waity.api.dto.channelDTO;
-import com.waity.api.service.channelTagService;
-import com.waity.api.service.scrapeService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.waity.api.mapper.channelTagMapper;
+import com.waity.api.service.entity.channelEntityService;
+import com.waity.api.service.entity.tagEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.waity.api.service.channelService;
-import com.waity.api.service.entityService;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 public class channelController {
 
-	private entityService<channelDTO> channelService;
-	private channelTagService channelTagService;
+	private channelEntityService channelEntityService;
+	private tagEntityService tagEntityService;
+	@Autowired
+	private channelTagMapper channelTagMapper;
 
-	public channelController(channelService channelService, channelTagService channelTagService) {
-		this.channelService = channelService;
-		this.channelTagService = channelTagService;
+	public channelController(channelEntityService channelEntityService, tagEntityService tagEntityService) {
+		this.channelEntityService = channelEntityService;
+		this.tagEntityService = tagEntityService;
 	}
 	@GetMapping("/api/channel")
-	public List<channelDTO> selectChannelAll() throws Exception {
-		return channelService.selectEntityAll();
+	public List<channelDTO> getAllChannels() throws Exception {
+		return channelEntityService.getAllChannels();
 	}
 	@GetMapping(path = "/api/channel/{id}")
-	public channelDTO selectChannelById(@PathVariable("id") int id) throws Exception {
-		return channelService.selectEntityById(id);
+	public channelDTO getChannel(@PathVariable("id") int id) throws Exception {
+		return channelEntityService.getChannel(id);
 	}
 	@GetMapping(value = "/api/channel", params = "ids")
-	public List<channelDTO> selectChannelByIds(@RequestParam("ids") List<Integer> ids) throws Exception {
-		return channelService.selectEntitiesByIds(ids);
+	public List<channelDTO> getChannels(@RequestParam("ids") List<Integer> ids) throws Exception {
+		return channelEntityService.getChannels(ids);
 	}
 	@GetMapping(value = "/api/channel", params = "tagId")
-	public List<channelDTO> selectChannelByTags(@RequestParam("tagId") int tagId) throws Exception {
-		return channelTagService.selectChannelsByTag(tagId);
-	}
-	@GetMapping(value = "/api/channel", params = "tags")
-	public List<channelDTO> selectChannelByTags(@RequestParam("tags") String[] tags) throws Exception {
-		return channelTagService.selectChannelsByTagNames(tags);
+	public List<channelDTO> getChannelsByTag(@RequestParam("tagId") int tagId) throws Exception {
+		return tagEntityService.getChannels(tagId);
 	}
 	@PutMapping("/api/channel")
 	public void updateChannel(@RequestBody channelDTO channel) throws Exception {
-		channelService.updateEntity(channel);
+		channelEntityService.updateChannel(channel);
 	}
 	@PutMapping(value = "/api/channel", params = "multiple")
 	public void updateChannels(@RequestBody List<channelDTO> channels) throws Exception {
-		channelService.updateEntities(channels);
+		channelEntityService.updateChannels(channels);
 	}
 	@DeleteMapping("/api/channel/{id}")
 	public void deleteChannel(@PathVariable int id) throws Exception{
-		channelService.deleteEntity(id);
+		channelEntityService.deleteChannel(id);
 	}
 	@DeleteMapping(value = "/api/channel" , params= "ids")
 	public void deleteChannels(@RequestParam List<Integer> ids) throws Exception{
-		channelService.deleteEntities(ids);
+		channelEntityService.deleteChannels(ids);
 	}
 	@PostMapping("/api/channel/tag")
-	public void insertChannelTags(@RequestBody HashMap<String, Object> hm) throws Exception {
+	public void connectTagsToChannel(@RequestBody HashMap<String, Object> hm) throws Exception {
 		int channelId = (int)hm.get("channelId");
 		List<Integer> tagIds = (List<Integer>)hm.get("tagIds");
-		channelTagService.insertChannelTags(channelId, tagIds);
-	}
-	@PutMapping("/api/channel/tag")
-	public void updateChannelTags(@RequestBody HashMap<String, Object> hm) throws Exception {
-		int channelId = (int)hm.get("channelId");
-		List<Integer> tagIds = (List<Integer>)hm.get("tagIds");
-		channelTagService.updateChannelTags(channelId, tagIds);
+		channelEntityService.connectTagsToChannel(channelId, tagIds);
 	}
 	@DeleteMapping("/api/channel/tag")
-	public void deleteChannelTags(@RequestBody HashMap<String, Object> hm) throws Exception{
+	public void disconnectTagsFromChannel(@RequestBody HashMap<String, Object> hm) throws Exception{
 		int channelId = (int)hm.get("channelId");
 		List<Integer> tagIds = (List<Integer>)hm.get("tagIds");
-		channelTagService.deleteChannelTags(channelId, tagIds);
+		channelEntityService.disconnectTagsFromChannel(channelId, tagIds);
+	}
+
+	@GetMapping(value="/api/channel", params="tagid")
+	public List<channelDTO> selectChannelsByTag(@RequestParam("tagid") int tagid) throws Exception {
+		return channelTagMapper.selectChannelsByTag(tagid);
 	}
 }

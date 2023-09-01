@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.waity.api.mapper.videoTagMapper">
+    <select id="selectVideosByTag" resultType="com.waity.api.dto.videoDTO">
+        SELECT
+            A.id, A.video_id, A.title, A.thumbnail
+        FROM
+            yt_video A
+        INNER JOIN
+            yt_video_tag B
+        ON
+            A.id = B.video_id
+        INNER JOIN
+            yt_tag C
+        ON
+            C.id = B.tag_id
+        WHERE
+            C.id = #{id}
+    </select>
+    <select id="selectTagsByVideo" resultType="com.waity.api.dto.tagDTO">
+        SELECT
+            C.id, C.tag_name
+        FROM
+            yt_video A
+        INNER JOIN
+            yt_video_tag B
+        ON
+            A.id = B.video_id
+        INNER JOIN
+            yt_tag C
+        ON
+            B.tag_id = C.id
+        WHERE
+            A.id = #{videoId}
+    </select>
+    <!-->
+        duplicate unique key 에 걸릴 시 예외 처리 필요
+    <!-->
+    <insert id="insertVideoTag" parameterType="hashmap">
+        insert into
+            yt_video_tag (video_id, tag_id)
+        values (
+            #{videoId},
+            #{tagId}
+        )
+    </insert>
+    <insert id="insertVideoTags" parameterType="hashmap">
+        insert into
+            yt_video_tag (video_id, tag_id)
+        values
+        <foreach collection="tagIds" item="tagId" open="(" close=")" separator="),(">
+            #{videoId},
+            #{tagId}
+        </foreach>
+    </insert>
+    <insert id="insertTagVideos" parameterType="hashmap">
+        insert into
+            yt_video_tag (video_id, tag_id)
+        values
+        <foreach collection="videoIds" item="videoId" open="(" close=")" separator="),(">
+            #{videoId},
+            #{tagId}
+        </foreach>
+    </insert>
+    <delete id="deleteVideoTag" parameterType="hashmap">
+        delete from
+            yt_video_tag
+        where
+            video_id = #{videoId}
+        and
+            tag_id = #{tagId}
+    </delete>
+    <delete id="deleteVideoTags" parameterType="hashmap">
+        delete from
+            yt_video_tag
+        where
+            video_id = #{videoId}
+        and
+            tag_id in
+        <foreach item="tagId" collection="tagIds" open="(" close=")" separator=",">
+            #{tagId}
+        </foreach>
+    </delete>
+    <delete id="deleteTagVideos" parameterType="hashmap">
+        delete from
+            yt_video_tag
+        where
+            tag_id = #{tagId}
+        and
+        video_id in
+        <foreach item="videoId" collection="videoIds" open="(" close=")" separator=",">
+            #{videoId}
+        </foreach>
+    </delete>
+</mapper>
